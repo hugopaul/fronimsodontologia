@@ -1,0 +1,106 @@
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav flex-column" role="tablist">
+                    <div class="sb-sidenav-menu-heading">IMS</div>
+
+                    <a class="nav-link" routerLink="/home">
+                        <div class="sb-nav-link-icon"><i class="fa fa-home"></i></div>
+                        IMS - Home
+                    </a>
+
+                    <div class="sb-sidenav-menu-heading">Principai Serviços</div>
+                    <a class="nav-link collapsed" routerLink="/#1" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        Pacientes
+                        <div class="sb-sidenav-collapse-arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+                    <div class="collapse" id="collapseOne" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/pacientes-form">Cadastrar Pacientes</a>
+                            <a class="nav-link" routerLink="/pacientes-list">Listar Pacientes</a>
+                        </nav>
+                    </div>
+                    <a class="nav-item nav-link collapsed" routerLink="/#4" data-toggle="collapse"
+                        data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-vote-yea"></i>
+                        </div>
+                        Prontuário
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/prontuario-form">Atendimento</a>
+                            <a class="nav-link" routerLink="/prontuario-list">Lista de Atendimentos</a>
+                        </nav>
+                    </div>
+
+                    <a class="nav-item nav-link collapsed" routerLink="/#7" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        Atestado Médico
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseTwo" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/atestado-form">Atestado Médico</a>
+                            <a class="nav-link" routerLink="/atestado-list">Listar Atestados</a>
+                        </nav>
+                    </div>
+                    <a class="nav-item nav-link collapsed" routerLink="/#9" data-toggle="collapse"
+                        data-target="#collapseTree" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        Receituário
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseTree" aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/receituario-form">Receituário</a>
+                            <a class="nav-link" routerLink="/receituario-list">Listar Receituários Emitidos</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">Livro Caixa</div>
+
+                    <a class="nav-item nav-link collapsed" routerLink="/#11" data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        Financeiro
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseFour" aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                           
+                            <a class="nav-link" routerLink="/financeiro-list">Listar Recebimentos</a>
+                        </nav>
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Usuário Logado: :</div>
+                <!--{{ usuaruioLogado }} -->
+            </div>
+        </nav>
+    </div>

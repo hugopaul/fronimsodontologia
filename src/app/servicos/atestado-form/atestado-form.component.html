@@ -1,0 +1,88 @@
+<h1 class="mt-4">Atestado</h1>
+
+<ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active">Médico</li>
+</ol>
+<div class="container">
+      <form>
+            <div class="row">
+                  <div class="col-md-6">
+                        <div class="form-group">
+                              <label>ID: </label>
+                              <input type="text" class="form-control" disabled="true" />
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                        <div class="form-group">
+                              <label>Data de Cadastro: </label>
+                              <input type="text" class="form-control" disabled="true" />
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="form-group">
+                              <label for="inputPaciente"> Lista de Pacientes </label>
+                              <select class="form-control" name="pacientes">
+                                    <option value="1">Selecione ...</option>
+                                    <option value="2"> teste</option>
+                              </select>
+                        </div>
+                  </div>
+            </div>
+            <br>
+            <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
+                  <div class="d-flex justify-content-center">
+
+                        <h4 class="form-group mr-4 "> Horário do Atendimento:    </h4>
+                  </div>
+                  <div class="row justify-content-start">
+
+                        <div class="col-md-4">
+                              <label> De: </label><input id="#" type="time" class="form-control" name="time" />
+                        </div>
+                        <div class=" col-md-4">
+                              <label> Até:  </label><input id="#" type="time" class="form-control" name="time" />
+                        </div>
+
+                        <div class="col-md-4">
+                              <label class=" d-flex "> Dias de repouso: </label>
+                              <input type="number" class="d-flex form-control" />
+                        </div>
+                  </div>
+            </div>
+            <br>
+            <div class="row">
+                  <div class="col-md-12">
+                  <label class="d-flex">CID:   </label>
+                  <input type="text" class="form-control" />
+                  </div>
+            </div>
+            <br>
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="form-group">
+                              <label for="inputPaciente">Dentista: </label>
+                              <select class="form-control" name="pacientes">
+                                    <option value="1">Selecione ...</option>
+                                    <option value="2"> Leonardo de Jesus Cezar</option>
+                              </select>
+                        </div>
+                  </div>
+            </div>
+            <div class="row">
+
+                  <div class="col-md-2">
+                        <button type="button" class="btn btn-success">
+                              <i class="fa fa-save"> </i> Salvar
+                        </button>
+
+                  </div>
+                  <div class="justify-content-end">
+                        <button type="submit" (click)="gerarpdf()" class="btn btn-warning">
+                              <i class="fa fa-print"> </i> Imprimir
+                        </button>
+                  </div>
+            </div>
+      </form>
+</div>
