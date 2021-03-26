@@ -8,6 +8,8 @@ import { AtestadoFormComponent } from './atestado-form/atestado-form.component';
 import { AtestadoListComponent } from './atestado-list/atestado-list.component';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { OrderModule } from 'ngx-order-pipe';
     CommonModule,
     ServicosRoutingModule,
     FormsModule,
-    OrderModule
+    OrderModule,
+    RouterModule,
+    HttpClientModule
   ], exports: [
       AtestadoFormComponent,
       AtestadoListComponent,

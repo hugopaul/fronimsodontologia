@@ -4,33 +4,50 @@
       <li class="breadcrumb-item active">Médico</li>
 </ol>
 <div class="container">
-      <form>
+      <form #atestadoForm="ngForm" (ngSubmit)="onSubmit()" >
             <div class="row">
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>ID: </label>
-                              <input type="text" class="form-control" disabled="true" />
+                  <div class="col-md-12">
+                        <div class="alert alert-success" role="alert" *ngIf="success == true">
+                              Requisição salva com sucesso!
                         </div>
                   </div>
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true" />
+                  <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                              {{ erro }}
                         </div>
                   </div>
             </div>
+            <div class="row" *ngIf="atestado.id">
+                  <div class="col-md-6">
+                        <div class="form-group">
+                              <label> ID: </label>
+                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
+                                    [ngModel]="atestado.id" name="id" />
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                        <div class="form-group">
+                              <label> Data de Cadastro: </label>
+                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
+                                    [ngModel]="atestado.dataCadastro" name="dataCadastro" />
+                        </div>
+                  </div>
+            </div>
+
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente"> Lista de Pacientes </label>
-                              <select class="form-control" name="pacientes">
-                                    <option value="1">Selecione ...</option>
-                                    <option value="2"> teste</option>
+                              <select class="form-control" [ngModelOptions]="{standalone:true}"
+                                    [(ngModel)]="atestado.prontuario.id" name="pacientes">
+                                    <option value="">Selecione ...</option>
+                                    <option *ngFor="let pacs of prontuarios | async" [ngValue]="pacs?.id">
+                                          {{ pacs.paciente.paciente }}</option>
                               </select>
                         </div>
                   </div>
             </div>
-            <br>
+         
             <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
                   <div class="d-flex justify-content-center">
 
@@ -39,15 +56,16 @@
                   <div class="row justify-content-start">
 
                         <div class="col-md-4">
-                              <label> De: </label><input id="#" type="time" class="form-control" name="time" />
+                              <label> De: </label>
+                              <input [(ngModel)]="atestado.chegada" name="chegada" type="time" class="form-control" name="time" />
                         </div>
                         <div class=" col-md-4">
-                              <label> Até:  </label><input id="#" type="time" class="form-control" name="time" />
+                              <label> Até:  </label><input [(ngModel)]="atestado.saida" name="saida" type="time" class="form-control" name="time" />
                         </div>
 
                         <div class="col-md-4">
                               <label class=" d-flex "> Dias de repouso: </label>
-                              <input type="number" class="d-flex form-control" />
+                              <input  [(ngModel)]="atestado.repouso" name="repouso" type="number" class="d-flex form-control"/>
                         </div>
                   </div>
             </div>
@@ -55,7 +73,7 @@
             <div class="row">
                   <div class="col-md-12">
                   <label class="d-flex">CID:   </label>
-                  <input type="text" class="form-control" />
+                  <input  [(ngModel)]="atestado.cid" name="cid" type="text" class="form-control" />
                   </div>
             </div>
             <br>
@@ -65,24 +83,33 @@
                               <label for="inputPaciente">Dentista: </label>
                               <select class="form-control" name="pacientes">
                                     <option value="1">Selecione ...</option>
-                                    <option value="2"> Leonardo de Jesus Cezar</option>
+                                    <option value="2">  PEGAR AUTOMATICO DO DOUTOR LOGADO </option>
                               </select>
                         </div>
                   </div>
             </div>
             <div class="row">
 
-                  <div class="col-md-2">
-                        <button type="button" class="btn btn-success">
-                              <i class="fa fa-save"> </i> Salvar
-                        </button>
-
-                  </div>
-                  <div class="justify-content-end">
-                        <button type="submit" (click)="gerarpdf()" class="btn btn-warning">
-                              <i class="fa fa-print"> </i> Imprimir
-                        </button>
-                  </div>
+                        <div class="col-md-2">
+                              <button type="submit" class="btn btn-success" *ngIf="!atestado.id">
+                                    <i class="fa fa-save"></i>  Salvar
+                              </button>
+                              <button type="submit" class="btn btn-success" *ngIf="atestado.id" >
+                                    <i class="fa fa-save"></i> Atualizar
+                              </button>
+                        </div>
+                        <div class="col-md-2">
+                              <button type="button" class="btn btn-danger" (click)="voltar()">
+                                    <i class="fa fa-chevron-left">  </i>    Voltar
+                              </button>
+                        </div> 
             </div>
+            <div class="float-right" *ngIf="atestado.id">
+                  <button type="button" (click)="gerarpdf()" class="btn btn-warning">
+                        <i class="fa fa-print"> </i> Imprimir
+                  </button>
+            </div>
+            
       </form>
+      
 </div>

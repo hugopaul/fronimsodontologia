@@ -4,18 +4,32 @@
       <li class="breadcrumb-item active">Médico</li>
 </ol>
 <div class="container">
-      <form>
+      <form #receituarioForm="ngForm" (ngSubmit)="onSubmit()">
             <div class="row">
+                  <div class="col-md-12">
+                        <div class="alert alert-success" role="alert" *ngIf="success == true">
+                              Requisição salva com sucesso!
+                        </div>
+                  </div>
+                  <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                              {{ erro }}
+                        </div>
+                  </div>
+            </div>
+            <div class="row" *ngIf="receituario.id">
                   <div class="col-md-6">
                         <div class="form-group">
                               <label>ID: </label>
-                              <input type="text" class="form-control" disabled="true" />
+                              <input type="text" class="form-control" disabled="true" [ngModel]="receituario.id"
+                                    name="id" />
                         </div>
                   </div>
                   <div class="col-md-6">
                         <div class="form-group">
                               <label>Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true" />
+                              <input type="text" class="form-control" disabled="true"
+                                    [ngModel]="receituario.dataCadastro" name="dataCadastro" />
                         </div>
                   </div>
             </div>
@@ -23,54 +37,217 @@
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente"> Lista de Pacientes </label>
-                              <select class="form-control" name="pacientes">
-                                    <option value="1">Selecione ...</option>
-                                    <option value="2"> teste</option>
+                              <select class="form-control" [ngModelOptions]="{standalone:true}"
+                                    [(ngModel)]="receituario.prontuario.id" name="pacientes">
+                                    <option value="">Selecione ...</option>
+                                    <option *ngFor="let pronts of prontuarios | async" [ngValue]="pronts?.id">
+                                          {{ pronts.paciente.paciente }}</option>
                               </select>
                         </div>
                   </div>
             </div>
-            <br>
+            
             <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
                   <div class="d-flex justify-content-center">
                         <h4 class="form-group mr-4 ">Receituário </h4>
                   </div>
+  
+                  <div id="medicamento">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento"
+                                                [(ngModel)]="receituario.medicamento[0].medicamento" name="medicamento"
+                                                class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="receituario.medicamento[0].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="receituario.medicamento[0].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                        </div>
 
-                  <div class="row">
-                        <div class="col-md-12">
-                              <div class="form-group">
-                                    <label>Medicamento:</label>
-                                    <input type="text" id="medicamento" name="medicamento" [(ngModel)]="medicamento"
-                                     class="form-control" maxlength="60" placeholder="Ex.: Dipirona 500mg/ml"/>
-                              </div>
+
+                        <div class="fomr-group mt-2 mb-2  btn-group-sm" *ngIf="receituario.medicamento[0].medicamento != null ">
+                              <button type="button" data-toggle="collapse" data-target="#one"
+                                    class="btn btn-success  btn-group-sm">
+                                    <i class="fa fa-plus"> </i>
+                              </button>
                         </div>
-                        <div class="col-md-6">
-                              <div class="form-group">
-                                    <label>Horas: </label>
-                                    <input type="time" id="horas" name="horas" [(ngModel)]="horas"
-                                    class="form-control" />
+                  </div>
+                  
+                  <div id="one" class="collapse">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento" [(ngModel)]="medicamentos[1].medicamento"
+                                                name="medicamento" class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
                               </div>
-                        </div>
-                        <div class="col-md-6">
-                              <div class="form-group">
-                                    <label>Dias:</label>
-                                    <input type="number" id="dias" name="dias" [(ngModel)]="dias"
-                                    class="form-control"/>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="medicamentos[1].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="medicamentos[1].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
                               </div>
                         </div>
                   </div>
-
-
+                  <div class="fomr-group  mt-2 mb-2  btn-group-sm" *ngIf="medicamentos[1].medicamento != null ">
+                        <button type="button" data-toggle="collapse" data-target="#two" class="btn btn-success">
+                              <i class="fa fa-plus"> </i>
+                        </button>
+                  </div>
+                  <div id="two" class="collapse">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento" [(ngModel)]="medicamentos[2].medicamento"
+                                                name="medicamento" class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="medicamentos[2].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="medicamentos[2].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="fomr-group  mt-2 mb-2  btn-group-sm" *ngIf="medicamentos[2].medicamento != null ">
+                        <button type="button" data-toggle="collapse" data-target="#tree" class="btn btn-success">
+                              <i class="fa fa-plus"> </i>
+                        </button>
+                  </div>
+                  <div id="tree" class="collapse">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento" [(ngModel)]="medicamentos[3].medicamento"
+                                                name="medicamento" class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="medicamentos[3].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="medicamentos[3].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="fomr-group  mt-2 mb-2  btn-group-sm" *ngIf="medicamentos[3].medicamento != null ">
+                        <button type="button" data-toggle="collapse" data-target="#four" class="btn btn-success">
+                              <i class="fa fa-plus"> </i>
+                        </button>
+                  </div>
+                  <div id="four" class="collapse">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento" [(ngModel)]="medicamentos[4].medicamento"
+                                                name="medicamento" class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="medicamentos[4].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="medicamentos[4].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="fomr-group  mt-2 mb-2  btn-group-sm" *ngIf="medicamentos[4].medicamento != null ">
+                        <button type="button" data-toggle="collapse" data-target="#five"
+                              class="btn btn-success  btn-group-sm">
+                              <i class="fa fa-plus"> </i>
+                        </button>
+                  </div>
+                  <div id="five" class="collapse">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div>
+                                          <label>Medicamento:</label>
+                                          <input type="text" id="medicamento" [(ngModel)]="medicamentos[5].medicamento"
+                                                name="medicamento" class="form-control" maxlength="60"
+                                                placeholder="Ex.: Dipirona 500mg/ml" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Horas: </label>
+                                          <input type="time" id="horas" [(ngModel)]="medicamentos[5].horas" name="horas"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                              <div class="col-md-6">
+                                    <div>
+                                          <label>Dias:</label>
+                                          <input type="number" id="dias" [(ngModel)]="medicamentos[5].dias" name="dias"
+                                                class="form-control" />
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            
             </div>
-
-            <br>
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente">Dentista: </label>
                               <select class="form-control" name="pacientes">
                                     <option value="1">Selecione ...</option>
-                                    <option value="2"> Leonardo de Jesus Cezar</option>
+                                    <option value="2"> PEGAR AUTOMATICO DO DOUTOR LOGADO </option>
                               </select>
                         </div>
                   </div>
@@ -78,16 +255,23 @@
             <div class="row">
 
                   <div class="col-md-2">
-                        <button type="button" class="btn btn-success">
-                              <i class="fa fa-save"> </i> Salvar
+                        <button type="submit" class="btn btn-success" *ngIf="!receituario.id">
+                              <i class="fa fa-save"></i> Salvar
                         </button>
-
-                  </div>
-                  <div class="justify-content-end">
-                        <button type="submit" (click)="gerarpdf()" class="btn btn-warning">
-                              <i class="fa fa-print"> </i> Imprimir
+                        <button type="submit" class="btn btn-success" *ngIf="receituario.id">
+                              <i class="fa fa-save"></i> Atualizar
                         </button>
                   </div>
+                  <div class="col-md-2">
+                        <button type="button" class="btn btn-danger" (click)="voltar()">
+                              <i class="fa fa-chevron-left"> </i> Voltar
+                        </button>
+                  </div>
+            </div>
+            <div class="float-right" *ngIf="receituario.id">
+                  <button type="button" (click)="gerarpdf()" class="btn btn-warning">
+                        <i class="fa fa-print"> </i> Imprimir
+                  </button>
             </div>
       </form>
 </div>

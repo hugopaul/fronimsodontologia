@@ -1,11 +1,10 @@
 import { Time } from "@angular/common";
 import { Prontuario } from "../prontuario/prontuario";
+import { Medicamento } from "./medicamento";
 
 export class Receituario{
       id: number;
-      medicamento: string;
-      horas: Time;
-      dias: number;
-      prontuario: Prontuario;
+      medicamento: Array<Medicamento> = new Array<Medicamento>() ;
+      prontuario: Prontuario  = new Prontuario;
       dataCadastro: Date;
 }

@@ -8,8 +8,10 @@ import { ReceituarioListComponent } from  './receituario-list/receituario-list.c
 
 const routes: Routes = [
   { path: 'receituario-form', component: ReceituarioFormComponent },
+  { path: 'receituario-form/:id', component: ReceituarioFormComponent },
   { path: 'receituario-list', component: ReceituarioListComponent },
   { path: 'atestado-form', component: AtestadoFormComponent },
+  { path: 'atestado-form/:id', component: AtestadoFormComponent },
   { path: 'atestado-list', component: AtestadoListComponent }
 ];
 

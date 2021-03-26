@@ -5,18 +5,7 @@
 </ol>
 <div class="container">
       <form #prontuarioForm="ngForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-                  <div class="col-md-12">
-                        <div class="alert alert-success" role="alert" *ngIf="success == true">
-                              Sucesso!
-                        </div>
-                  </div>
-                  <div class="col-md-12">
-                        <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
-                              {{ erro }}
-                        </div>
-                  </div>
-            </div>
+
             <div class="row" *ngIf="prontuario.id">
                   <div class="col-md-6">
                         <div class="form-group">
@@ -143,17 +132,18 @@
 
             </div>
             <div class="row ">
-                  <div class="col-md-12" >
-                        <div class="form-group" >
+                  <div class="col-md-12">
+                        <div class="form-group">
                               <label class="row d-flex justify-content-around">Dentes que possuem anotações:</label>
                               <div class="row d-flex justify-content-around" *ngFor=" let dts of prontuario.dentes">
-                                  
-                                         
-                                                <label *ngIf="dts != null"> {{ dts }} - Dente {{ 1+1 }}</label>
-                                
-                               
+
+
+                                    <label *ngIf="dts != null"> Dente {{dentesComAnotacao(dts)}} : {{ dts }} </label>
+
+
                               </div>
-                              <label class="row d-flex justify-content-around">Selecione o dente no Odontograma</label>
+                              <label class="row d-flex justify-content-around">Selecione o dente no Odontograma para
+                                    criar/editar infromações</label>
                         </div>
                   </div>
             </div>
@@ -269,7 +259,7 @@
 
             </div>
             <br>
-           
+
             <br>
             <div class="row">
                   <div class="col-md-12">
@@ -281,83 +271,29 @@
                   </div>
             </div>
             <br>
-
-
-
-            <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
-                  <div class="d-flex justify-content-center">
-
-                        <h4 class="form-group mr-4 ">Atendimento Realizado: </h4>
-
-                  </div>
-                  <p class="d-flex justify-content-center"> Lance o serviço que foi realizado e o valor que deve ser
-                        cobrado do cliente:</p>
-                  <div class="form-group d-flex justify-content-around">
-                        <label>Serviço realizado : </label>
-                        <textarea type="text" class="form-control" [(ngModel)]="finan.descricao" name="descricao"></textarea>
-
-                        <label for="inputReq "> Valor R$:</label>
-                        <input id="valorServico" type="text" class="form-control col-md-3" name="valorServico"
-                              [(ngModel)]="valorServico" (keyup)="onKeyUp($event)">
-
-                  </div>
-                  <div class=" d-flex justify-content-center">
-                        <button type="button" (click)="enviarParaFinanceiro()" class="btn btn-success">
-                              <i class="fa fa-money-check-alt"></i> Enviar ao Financiero
-                        </button>
-                  </div>
-            </div>
-            <div class="d-flex justify-content-center">
-                  <div class="col-md-2">
-                        <button type="submit" class="btn btn-success">
-                              <i class="fa fa-save"></i> Salvar
-                        </button>
-                  </div>
-            </div>
-
-            <br>
             <div class="row">
                   <div class="col-md-12">
                         <div class="alert alert-success" role="alert" *ngIf="success == true">
-                              {{ sucessoAtend}}!
+                              Salvo com Sucesso!
                         </div>
                   </div>
                   <div class="col-md-12">
                         <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
-                              {{ erroAtend }}
+                              {{ erro }}
                         </div>
                   </div>
             </div>
-
-            <div class="row">
-                  <div class="col-md-12">
-                      <table class="table table-striped table-hover">
-                          <thead class="thead-dark">
-                              <tr>
-                                  <th (click)="sort('id')">#<span *ngIf="key =='id'"> {{ reverse ? '▲' : '▼' }} </span></th>
-                                  <th (click)="sort('atendimento')">Atendimento<span *ngIf="key =='atendimento'"> {{ reverse ? '▲' : '▼' }} </span></th>
-                                  <th (click)="sort('dataAtendimento')">Data de Atendimento<span *ngIf="key =='dataAtendimento'"> {{ reverse ? '▲' : '▼' }} </span></th>
-                                  <th>Editar</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr *ngFor="let atend of atendimento | orderBy: key : reverse; let i = index ">
-                                  <td>{{ atend.id}}</td>
-                                  <td>{{ atend.atendimento}}</td>
-                                  <td>{{ atend.dataAtendimento }}</td>
-                                  <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                        <button class="btn btn-danger" (click)="delecaoAtendimento(atend)"
-                                      data-toggle="modal" data-target="#modalDelecao"><i class="fa fa-trash"></i></button></div>
-                                  </td>
-          
-                              </tr>
-                          
-                          </tbody>
-                      </table>
+            <div class="d-flex justify-content-center">
+                  <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                              <i class="fa fa-save"></i> Salvar Prontuário ?
+                        </button>
                   </div>
-              </div>
+            </div>
+            <br>
+            
 
-          
+
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog" role="document">
@@ -376,13 +312,96 @@
                                           [(ngModel)]="prontuario.dentes[denteSelect]" name="dentes[]"></textarea>
                               </div>
                               <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                          data-dismiss="modal" (click)="limparCampo(denteSelect)">Cancelar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                          (click)="limparCampo(denteSelect)">Cancelar</button>
                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Salvar</button>
                               </div>
                         </div>
                   </div>
             </div>
+      </form>
+      <form #atendimentoForm="ngForm" >
+            <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
+                  <div class="d-flex justify-content-center">
 
+                        <h4 class="form-group mr-4 ">Atendimento Realizado: </h4>
+
+                  </div>
+                  <p class="d-flex justify-content-center"> Lance o serviço que foi realizado e o valor que deve ser
+                        cobrado do cliente:</p>
+                  <div class="form-group justify-content-around">
+                        <label>Serviço realizado : </label>
+                        <input type="text" class="form-control" [(ngModel)]="finan.descricao" name="descricao">
+
+                        <label for="inputReq "> Valor R$:</label>
+                        <input id="valorServico" type="text" class="form-control col-md-3" name="valorServico"
+                              [(ngModel)]="valorServico" (keyup)="onKeyUp($event)">
+
+                  </div>
+                  <div class=" d-flex justify-content-center">
+                        <button type="button" (click)="enviarParaFinanceiroEAtendimento()" class="btn btn-success">
+                              <i class="fa fa-money-check-alt"></i> Criar atendimento e enviar ao Financeiro ?
+                        </button>
+                  </div>
+            </div>
+
+
+            <br>
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="alert alert-success" role="alert" *ngIf="sucessoAtend != null">
+                              Atendimento salvo com sucesso!
+                        </div>
+                  </div>
+                  <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                              {{ erroAtend }}
+                        </div>
+                  </div>
+            </div>
+
+            <h4 class="form-group mr-4 ">Lista de Atendimentos do {{ prontuario.paciente.paciente }}: </h4>
+
+            <div class="row">
+                  <div class="col-md-12">
+                        <table class="table table-striped table-hover">
+                              <thead class="thead-dark">
+                                    <tr>
+                                          <th (click)="sort('id')">#<span *ngIf="key =='id'"> {{ reverse ? '▲' : '▼' }}
+                                                </span></th>
+                                          <th (click)="sort('atendimento')">Atendimento<span
+                                                      *ngIf="key =='atendimento'"> {{ reverse ? '▲' : '▼' }} </span>
+                                          </th>
+                                          <th (click)="sort('valor')">Valor<span
+                                                *ngIf="key =='valor'"> {{ reverse ? '▲' : '▼' }} </span>
+                                    </th>
+                                          <th (click)="sort('dataAtendimento')">Data de Atendimento<span
+                                                      *ngIf="key =='dataAtendimento'"> {{ reverse ? '▲' : '▼' }} </span>
+                                          </th>
+                                          <th>Editar</th>
+                                    </tr>
+                              </thead>
+                              <tbody *ngFor="let atend of atendimento | orderBy: key : reverse; let i = index ">
+                                    <tr *ngIf="atend.prontuario.id == prontuario.id">
+                                         
+                                          <td>{{ atend.id}}</td>
+                                          <td>{{ atend.atendimento}}</td>
+                                          <td>{{ atend.valor }}</td>
+                                          <td>{{ atend.dataAtendimento }}</td>
+
+                                          <td>
+                                                <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                      <button class="btn btn-danger" (click)="delecaoAtendimento(atend)"
+                                                            data-toggle="modal" data-target="#modalDelecao"><i
+                                                                  class="fa fa-trash"></i></button>
+                                                </div>
+                                          </td>
+                                   
+                                    </tr>
+
+                              </tbody>
+                        </table>
+                  </div>
+            </div>
       </form>
 </div>

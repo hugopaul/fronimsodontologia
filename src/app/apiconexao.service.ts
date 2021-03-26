@@ -6,6 +6,7 @@ import { Paciente } from './pacientes/pacientes';
 import { Atendimento } from './prontuario/atendimento';
 import { Prontuario } from './prontuario/prontuario';
 import { Atestado } from './servicos/atestado';
+import { Medicamento } from './servicos/medicamento';
 import { Receituario } from './servicos/receituario';
 
 @Injectable({
@@ -33,6 +34,13 @@ export class ApiconexaoService {
   salvarAtendimento(atendimento: Atendimento): Observable<Atendimento> {
     return this.http.post<Atendimento>('http://localhost:8080/atendimentos', atendimento);
   }
+  salvarMedicamento(medicamento: Medicamento): Observable<Medicamento> {
+    return this.http.post<Medicamento>('http://localhost:8080/medicamentos', medicamento);
+  }
+
+  salvarTodosMedicamentos(medicamento : Array<Medicamento>): Observable<Array<Medicamento>> {
+    return this.http.post<Array<Medicamento>>("http://localhost:8080/medicamentos/saveall", medicamento);
+  }
 
 
   getAtestado(): Observable<Atestado[]> {
@@ -52,6 +60,9 @@ export class ApiconexaoService {
   }
   getAtendimento(): Observable<Atendimento[]> {
     return this.http.get<Atendimento[]>("http://localhost:8080/atendimentos");
+  }
+  getMedicamento(): Observable<Medicamento[]> {
+    return this.http.get<Medicamento[]>("http://localhost:8080/medicamentos");
   }
 
 
@@ -73,6 +84,9 @@ export class ApiconexaoService {
   getAtendimentoById(id: number): Observable<Atendimento> {
     return this.http.get<any>(`http://localhost:8080/atendimentos/${id}`);
   }
+  getMedicamentoById(id: number): Observable<Medicamento> {
+    return this.http.get<any>(`http://localhost:8080/medicamentos/${id}`);
+  }
 
   putAtestado(atestado: Atestado): Observable<any> {
     return this.http.put<Atestado>(`http://localhost:8080/atestados/${atestado.id}`, atestado);
@@ -91,6 +105,9 @@ export class ApiconexaoService {
   }
   putAtendimento(atendimento: Atendimento): Observable<any> {
     return this.http.put<Atendimento>(`http://localhost:8080/atendimentos/${atendimento.id}`, atendimento);
+  }
+  putMedicamento(medicamento: Medicamento): Observable<any> {
+    return this.http.put<Medicamento>(`http://localhost:8080/medicamentos/${medicamento.id}`, medicamento);
   }
 
   delAtestado(atestado: Atestado): Observable<any> {
@@ -111,5 +128,11 @@ export class ApiconexaoService {
   delAtendimento(atendimento: Atendimento): Observable<any> {
     return this.http.delete<any>(`http://localhost:8080/atendimentos/${atendimento.id}`);
   }
+  delMedicamento(medicamento: Medicamento): Observable<any> {
+    return this.http.delete<any>(`http://localhost:8080/medicamentos/${medicamento.id}`);
+  }
+
+
+
 
 }

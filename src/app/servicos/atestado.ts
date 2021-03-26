@@ -3,10 +3,10 @@ import { Prontuario } from "../prontuario/prontuario";
 
 export class Atestado{
       id: number;
-      chegada: Time;
-      saida: Time;
+      chegada: Date;
+      saida: Date;
       repouso: number;
       cid: number;
-      prontuario: Prontuario;
+      prontuario : Prontuario = new Prontuario;
       dataCadastro: Date;
 }

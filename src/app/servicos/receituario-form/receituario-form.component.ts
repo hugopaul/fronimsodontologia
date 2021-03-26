@@ -1,6 +1,15 @@
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import { newArray } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as jsPDF from 'jspdf';
+import { $$ } from 'protractor';
+import { Observable } from 'rxjs';
+import { ApiconexaoService } from 'src/app/apiconexao.service';
 import { Paciente } from 'src/app/pacientes/pacientes';
+import { Prontuario } from 'src/app/prontuario/prontuario';
+import { Medicamento } from '../medicamento';
+import { Receituario } from '../receituario';
 
 @Component({
   selector: 'app-receituario-form',
@@ -9,25 +18,77 @@ import { Paciente } from 'src/app/pacientes/pacientes';
 })
 export class ReceituarioFormComponent implements OnInit {
 
-  hugo: string = "Hugo Paul Alves Carvalho";
-  endereco: string = "GAMAGGIORE T 7 APT 302";
-  cpf: string = "018.838.031.01";
-  telefone: string = '1234-1234';
-  medicamento: string;
-  horas: string;
-  dias: number;
-  doutor: string = "Leonardo de Jesus Cezar";
-  cro: string = "123456 CRO-DF";
-  paciente: Paciente = new Paciente;
+  receituario : Receituario;
+  prontuarios : Observable<Prontuario[]>;
+
+  medicamentos = new Array<any>();
+
+  success: boolean = false;
+  errors: String[];
+     
+  id: number;
 
   dayName = new Array("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado")
   monName = new Array("janeiro", "fevereiro", "março", "abril", "maio", "junho", "agosto", "outubro", "novembro", "dezembro")
   now = new Date;
 
-  constructor() { }
-
+  constructor(
+    private service: ApiconexaoService,
+    private router: Router,
+    private acttivatedRouter: ActivatedRoute
+  ) { this.receituario = new Receituario()
+     }
   ngOnInit(): void {
+    this.prontuarios = this.service.getProntuario();
+    let params: Observable<Params> = this.acttivatedRouter.params;
+    params.subscribe(urlParams => {
+      this.id = urlParams['id'];
+      if (this.id) {
+        this.service.getReceituarioById(this.id).subscribe(
+          response => this.receituario = response, errorResponse => this.receituario = new Receituario())
+          this.medicamentos = this.receituario.medicamento
+      }
+    })
+   
   }
+
+  voltar(){
+    this.router.navigate(["receituario-list"])
+  }
+
+  onSubmit(){
+    console.log(this.receituario )
+    for(let i in this.medicamentos){
+      if(this.medicamentos[i].medicamento != null){
+        this.receituario.medicamento.push(this.medicamentos[i])
+      }
+    }
+    if (this.id) {
+      this.service.putReceituario(this.receituario)
+        .subscribe(response => {
+          this.success = true;
+          this.errors = null;
+        }, errorResponse => {
+          console.log(this.errors)
+          this.errors = ['Erro ao Atualizar.']
+        })
+    } else {
+      this.service
+        .salvarReceituario(this.receituario)
+        .subscribe(response => {
+          this.errors = null;
+          this.success = true;
+          this.receituario = response;
+          console.log(this.receituario);
+          this.router.navigate([`receituario-form/${this.receituario.id}`])
+        }, errorResponse => {
+          this.success = false;
+          this.errors = errorResponse.error.errors;
+        });
+    }
+    this.medicamentos = this.receituario.medicamento;
+  }
+
   gerarpdf() {
 
     let documento = new jsPDF.jsPDF();
@@ -37,18 +98,18 @@ export class ReceituarioFormComponent implements OnInit {
     documento.setFont("Arial");
     documento.text("RECEITUÁRIO MÉDICO", 65, 65);
     documento.setFontSize(14);
-    documento.text(`        Paciente: ${this.hugo}
-        Endereço: ${this.endereco}
-        Cpf/Rg: ${this.cpf}        Telefone: ${this.telefone} `, 12, 80);
+    documento.text(`        Paciente: ${this.receituario.prontuario.paciente.paciente}
+        Endereço: ${this.receituario.prontuario.paciente.endereco}
+        Cpf/Rg: ${this.receituario.prontuario.paciente.cpf}        Telefone: ${this.receituario.prontuario.paciente.telefone} `, 12, 80);
 
 
-    documento.text(`1 - ${this.medicamento} de ${this.horas} em ${this.horas} durante ${this.dias}`, 20, 120);
+    /*documento.text(`1 - ${this.receituario.medicamento} de ${this.receituario.horas} em ${this.receituario.horas} durante ${this.receituario.dias}`, 20, 120);*/
 
 
     documento.text(`  Brasília-DF, ${this.now.getDate()} de ${this.monName[this.now.getMonth()]} de ${this.now.getFullYear()}. `, 65, 172);
     documento.setLineWidth(0.5)
     documento.line(150, 200, 60, 200)
-    documento.text(`${this.doutor} - ${this.cro}`, 60, 210);
+    documento.text(`DOUTOR - CRO XXXXX`, 60, 210);
 
     documento.save("teste.pdf");
 
