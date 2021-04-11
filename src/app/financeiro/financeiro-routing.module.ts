@@ -5,6 +5,7 @@ import { FinancieroListComponent } from  './financiero-list/financiero-list.comp
 
 const routes: Routes = [
   { path: 'financeiro-form', component: FinancieroFormComponent },
+  { path: 'financeiro-form/:id', component: FinancieroFormComponent },
   { path: 'financeiro-list', component: FinancieroListComponent }
 ];
 

@@ -9,7 +9,7 @@
             <div class="row">
                   <div class="col-md-12">
                         <div class="alert alert-success" role="alert" *ngIf="success == true">
-                              Requisição salva com sucesso!
+                              Paciente salvo(a) com sucesso!
                         </div>
                   </div>
                   <div class="col-md-12">
@@ -58,7 +58,7 @@
                         <div class="form-group">
                               <label>CPF: </label>
                               <input type="text" class="form-control" 
-                              [(ngModel)]="paciente.cpf" name="cpf"/>
+                              [(ngModel)]="paciente.cpf" name="cpf"  mask="000.000.000-00"  />
                         </div>
                   </div>
                   
@@ -75,7 +75,8 @@
                         <div class="form-group">
                               <label>Telefone: </label>
                               <input type="text" class="form-control"
-                              [(ngModel)]="paciente.telefone" name="telefone" />
+                              [(ngModel)]="paciente.telefone" name="telefone"
+                              mask="(00) 0 0000-0000" />
                         </div>
                   </div>
             </div>

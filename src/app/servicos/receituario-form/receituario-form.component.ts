@@ -1,12 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { newArray } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as jsPDF from 'jspdf';
-import { $$ } from 'protractor';
 import { Observable } from 'rxjs';
 import { ApiconexaoService } from 'src/app/apiconexao.service';
-import { Paciente } from 'src/app/pacientes/pacientes';
 import { Prontuario } from 'src/app/prontuario/prontuario';
 import { Medicamento } from '../medicamento';
 import { Receituario } from '../receituario';
@@ -21,12 +20,12 @@ export class ReceituarioFormComponent implements OnInit {
   receituario : Receituario;
   prontuarios : Observable<Prontuario[]>;
 
-  medicamentos = new Array<any>();
-
   success: boolean = false;
   errors: String[];
-     
+
   id: number;
+  o : number = 1;
+  recSelect: Receituario;
 
   dayName = new Array("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado")
   monName = new Array("janeiro", "fevereiro", "março", "abril", "maio", "junho", "agosto", "outubro", "novembro", "dezembro")
@@ -36,8 +35,11 @@ export class ReceituarioFormComponent implements OnInit {
     private service: ApiconexaoService,
     private router: Router,
     private acttivatedRouter: ActivatedRoute
-  ) { this.receituario = new Receituario()
+  ) {
+     this.receituario = new Receituario();
      }
+
+
   ngOnInit(): void {
     this.prontuarios = this.service.getProntuario();
     let params: Observable<Params> = this.acttivatedRouter.params;
@@ -46,10 +48,21 @@ export class ReceituarioFormComponent implements OnInit {
       if (this.id) {
         this.service.getReceituarioById(this.id).subscribe(
           response => this.receituario = response, errorResponse => this.receituario = new Receituario())
-          this.medicamentos = this.receituario.medicamento
-      }
+          this.service.getAllByReceituario(this.id).subscribe(
+            response => {
+              this.receituario.medicamento = response;
+              console.log(this.receituario.medicamento);
+           }
+          )}
+          this.receituario.medicamento[0] = new Medicamento();
     })
-   
+  }
+  addmed(){
+    this.receituario.medicamento[this.receituario.medicamento.length++] = new Medicamento();
+  }
+  remove(){
+    this.receituario.medicamento.slice(this.receituario.medicamento.length--)
+    console.log(this.receituario.medicamento)
   }
 
   voltar(){
@@ -57,12 +70,7 @@ export class ReceituarioFormComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.receituario )
-    for(let i in this.medicamentos){
-      if(this.medicamentos[i].medicamento != null){
-        this.receituario.medicamento.push(this.medicamentos[i])
-      }
-    }
+    console.log( this.receituario)    
     if (this.id) {
       this.service.putReceituario(this.receituario)
         .subscribe(response => {
@@ -86,9 +94,9 @@ export class ReceituarioFormComponent implements OnInit {
           this.errors = errorResponse.error.errors;
         });
     }
-    this.medicamentos = this.receituario.medicamento;
-  }
 
+  }
+  
   gerarpdf() {
 
     let documento = new jsPDF.jsPDF();

@@ -33,6 +33,9 @@ export class ProntuarioFormComponent implements OnInit {
   sucessoAtend: boolean;
   erroAtend: string[];
 
+  sucessoAtendList: boolean;
+  erroAtendList: string[];
+
   id: number;
   valorServico: string;
   anotacao: string;
@@ -66,6 +69,21 @@ export class ProntuarioFormComponent implements OnInit {
 
   }
 
+  refresh(pacs : Paciente){
+    this.service.getProntByPac(pacs.id)
+      .subscribe( response => {
+            if(response.id){
+              this.router.navigate([`prontuario-form/${response.id}`])
+            }
+      }, errorResponse => {
+        this.router.navigate([`prontuario-form/`])
+        this.prontuario.paciente = pacs;
+      })
+  }
+  novo(){
+    this.router.navigate([`prontuario-form/`])
+  }
+
   dentesComAnotacao(dentes: string) {
 
     for (let i = 0; i < this.prontuario.dentes.length; i++) {
@@ -89,7 +107,7 @@ export class ProntuarioFormComponent implements OnInit {
         }, errorResponse => {
           console.log(this.errors)
           this.errors = ['Erro ao Atualizar.']
-        })
+         })
     } else {
       this.service
         .salvarProntuario(this.prontuario)
@@ -120,21 +138,26 @@ export class ProntuarioFormComponent implements OnInit {
 
 
       this.service.salvarFinanceiro(this.finan).subscribe(response => {
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 2000);
+
+        this.sucessoAtend = true
+        this.erroAtend = null;
       }, errorResponse => {
-        console.log(this.errors)
-        this.errors = ['Error ao enviar para o Financeiro.']
-      });
+        this.sucessoAtend = false
+        this.erroAtend = errorResponse.error.errors
+            });
       this.service.salvarAtendimento(this.atend).subscribe(
         response => {
-          this.success = true;
-          this.errors = null;
+          this.sucessoAtend = true;
+          this.erroAtend = null;
         }, errorResponse => {
-          this.errors.push("Error ao gerar atendimento!");
+          this.erroAtend = errorResponse.error.errors
         }
       )
     } else {
       this.errors = ["Deve salvar os dados do prontuário antes de enviar ao Financeiro"];
+      this.erroAtend = ["Deve salvar os dados do prontuário antes de enviar ao Financeiro"];
+
     }
 
   }
@@ -211,12 +234,12 @@ export class ProntuarioFormComponent implements OnInit {
   delecaoAtendimento(atend: Atendimento) {
     this.service.delAtendimento(atend).subscribe(
       response => {
-        this.erroAtend = null;
-        this.sucessoAtend = true;
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 2000);
+        this.erroAtendList = null;
+        this.sucessoAtendList = true;
       }, errorResponse => {
-        this.erroAtend = ["Erro ao deletar Atendimento!!!"],
-          this.sucessoAtend = null;
+        this.sucessoAtend = null;
+        this.erroAtendList = errorResponse.error.errors
       }
     )
 

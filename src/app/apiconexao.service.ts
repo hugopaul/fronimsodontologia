@@ -34,14 +34,18 @@ export class ApiconexaoService {
   salvarAtendimento(atendimento: Atendimento): Observable<Atendimento> {
     return this.http.post<Atendimento>('http://localhost:8080/atendimentos', atendimento);
   }
-  salvarMedicamento(medicamento: Medicamento): Observable<Medicamento> {
-    return this.http.post<Medicamento>('http://localhost:8080/medicamentos', medicamento);
+  salvarMedicamento(medicamento: Array<Medicamento>): Observable<Array<Medicamento>> {
+    return this.http.post<Array<Medicamento>>('http://localhost:8080/medicamentos', medicamento);
   }
 
   salvarTodosMedicamentos(medicamento : Array<Medicamento>): Observable<Array<Medicamento>> {
     return this.http.post<Array<Medicamento>>("http://localhost:8080/medicamentos/saveall", medicamento);
   }
 
+
+  getAllByReceituario(id : number):Observable<Medicamento[]>{
+    return this.http.get<Medicamento[]>(`http://localhost:8080/medicamentos/recbyid/${id}`);
+  }
 
   getAtestado(): Observable<Atestado[]> {
     return this.http.get<Atestado[]>("http://localhost:8080/atestados");
@@ -65,11 +69,18 @@ export class ApiconexaoService {
     return this.http.get<Medicamento[]>("http://localhost:8080/medicamentos");
   }
 
+  
+  getProntByPac( id:number ): Observable<Receituario>{
+    return this.http.get<any>(`http://localhost:8080/prontuarios/prontbypac/${id}`);
+  }
+
+
+
 
   getAtestadoById(id: number): Observable<Atestado> {
     return this.http.get<any>(`http://localhost:8080/atestados/${id}`);
   }
-  geFinanceiroById(id: number): Observable<Financeiro> {
+  getFinanceiroById(id: number): Observable<Financeiro> {
     return this.http.get<any>(`http://localhost:8080/financeiros/${id}`);
   }
   getPacienteById(id: number): Observable<Paciente> {

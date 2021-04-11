@@ -4,18 +4,30 @@
       <li class="breadcrumb-item active">Cadastro</li>
 </ol>
 <div class="container">
-      <form>
+      <form #financeiroForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="alert alert-success" role="alert" *ngIf="success == true">
+                              Pagamento salvo com sucesso!
+                        </div>
+                  </div>
+                  <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert" *ngFor="let erro of errors">
+                              {{ erro }}
+                        </div>
+                  </div>
+            </div>
             <div class="row">
                   <div class="col-md-6">
                         <div class="form-group">
                               <label>ID: </label>
-                              <input type="text" class="form-control" disabled="true"/>
+                              <input type="text" [ngModel]="financeiro.id" class="form-control" name="id" disabled="true"/>
                         </div>
                   </div>
                   <div class="col-md-6">
                         <div class="form-group">
                               <label>Data do Lançamento: </label>
-                              <input type="text" class="form-control" disabled="true" />
+                              <input type="text" [ngModel]="financeiro.dataLancamento" name="dataLancamento" class="form-control" disabled="true" />
                         </div>
                   </div>
             </div>
@@ -23,7 +35,7 @@
                   <div class="col-md-12">
                         <div class="form-group">
                               <label>Nome Completo: </label>
-                              <input type="text" class="form-control" disabled="true"/>
+                              <input type="text" [ngModel]="financeiro.prontuario.paciente.paciente" name="paciente" class="form-control" disabled="true"/>
                         </div>
 
                   </div>
@@ -32,34 +44,34 @@
                   <div class="col-md-12">
                         <div class="form-group">
                               <label>Serviço Realizado: </label>
-                              <input type="text" class="form-control" disabled="true"/>
+                              <input type="text" [ngModel]="financeiro.descricao" name="descricao" class="form-control" disabled="true"/>
                         </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                         <div class="form-group">
                               <label> Valor: </label>
-                              <input type="text" class="form-control" disabled="true"/>
+                              <input type="text"[ngModel]="financeiro.valor" name="valor" class="form-control" disabled="true"/>
                         </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                         <div class="form-group">
                               <label> Forma de Pagamento</label>
-                              <select class="form-control" name="pacientes">
+                              <select class="form-control" [(ngModel)]="financeiro.forma" name="forma">
                                     <option value="1">Selecione ...</option>
                                     <option value="2">Dinheiro</option>
                                     <option value="3">Cartão de Crédito</option>
                                     <option value="4">Cartão de Débito</option>
-                                    <option value="4">Pagamento via PIX</option>
-                                    <option value="4">Pagamento via Transferência</option>
+                                    <option value="5">Pagamento via PIX</option>
+                                    <option value="6">Pagamento via Transferência</option>
                               </select>
                         </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                         <div class="form-group">
                               <label> Dividido em: </label>
-                              <select class="form-control" name="pacientes">
+                              <select class="form-control" [(ngModel)]="financeiro.dividido" name="dividido">
                               <option value="1">Selecione ...</option>
-                              <option value="2">1 X</option>
+                              <option value="2">À vista</option>
                               <option value="3">2 X</option>
                               <option value="4">3 X</option>
                               <option value="5">4 X</option>
@@ -69,15 +81,36 @@
                               <option value="9">8 X</option>
                               <option value="10">9 X</option>
                               <option value="11">10 X</option>
-                        </select>
+                               </select>
+                         </div>
+                   </div>
+                        <div class="col-md-3">
+                              <div class="form-group">
+                                    <label> Dividido em: </label>
+                                    <select class="form-control" [(ngModel)]="financeiro.status" name="status">
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Pago">Pago</option>
 
+                                    </select>
+                              </div>
                         </div>
-                  </div>
+                        <div class="col-md-12">
+                              <div class="form-group">
+                                    <label> Observações: </label>
+                                    <textarea type="text" class="form-control" name="observacao"
+                                          [(ngModel)]="financeiro.observacao"></textarea>
+                              </div>
+                        </div>
             </div>
             <div class="row">
                   <div class="col-md-2">
                         <button type="submit" class="btn btn-success">
                               <i class="fa fa-save"></i>  Salvar
+                        </button>
+                  </div>
+                  <div class="col-md-2">
+                        <button type="button" (click)="voltar()" class="btn btn-danger">
+                              <i class="fa fa-chevron-left"> </i>  Voltar
                         </button>
                   </div>
             </div>

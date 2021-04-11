@@ -13,14 +13,23 @@ import { ServicosModule } from './servicos/servicos.module';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
+
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
-   
+    HomeComponent   
   ],
   imports: [
+    NgxMaskModule.forRoot( maskConfig ),
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -30,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     ProntuarioModule,
     ServicosModule,
     FormsModule,
-    OrderModule
+    OrderModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

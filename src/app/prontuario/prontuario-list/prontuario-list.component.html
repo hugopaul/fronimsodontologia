@@ -41,7 +41,7 @@
                     <tr *ngFor="let pront of prontuario | orderBy: key : reverse; let i = index ">
                         <td>{{ pront.id}}</td>
                         <td>{{ pront.paciente.paciente}}</td>
-                        <td>{{ pront.paciente.cpf }}</td>
+                        <td>{{ pront.paciente.cpf | mask: '000.000.000-00'}}</td>
                         <td>{{ pront.paciente.dataNascimento }}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
                               <button class="btn btn-primary" routerLink="/prontuario-form/{{ pront.id }}"><i class="fa fa-edit"></i></button>

@@ -42,9 +42,9 @@
                     <tr *ngFor="let pac of paciente | orderBy: key : reverse; let i = index ">
                         <td>{{ pac.id}}</td>
                         <td>{{ pac.paciente}}</td>
-                        <td>{{ pac.cpf }}</td>
-                        <td>{{ pac.telefone }}</td>
-                        <td>{{ pac.dataNascimento }}</td>
+                        <td>{{ pac.cpf  | mask: '000.000.000-00' }}</td>
+                        <td>{{ pac.telefone | mask: '(00) 0 0000-0000'}}</td>
+                        <td>{{ pac.dataNascimento | mask: '0000/00/00'}}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
                               <a class="btn btn-success" href="tel:{{pac.telefone}}"><i class="fas fa-phone-square-alt"></i></a>
                               <button class="btn btn-primary" routerLink="/pacientes-form/{{ pac.id }}"><i class="fa fa-edit"></i></button>
