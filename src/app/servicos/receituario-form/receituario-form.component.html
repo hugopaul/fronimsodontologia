@@ -5,9 +5,9 @@
 </ol>
 <div class="container">
       <form #receituarioForm="ngForm" (ngSubmit)="onSubmit()">
-            
+
             <div class="row">
-                 
+
                   <div class="col-md-12">
                         <div class="alert alert-success" role="alert" *ngIf="success == true">
                               Requisição salva com sucesso!
@@ -19,73 +19,67 @@
                         </div>
                   </div>
             </div>
-            <div class="row" *ngIf="receituario.id">
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>ID: </label>
-                              <input type="text" class="form-control" disabled="true" [ngModel]="receituario.id"
-                                    name="id" />
-                        </div>
-                  </div>
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true"
-                                    [ngModel]="receituario.dataCadastro" name="dataCadastro" />
-                        </div>
-                  </div>
-            </div>
+
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente"> Lista de Pacientes </label>
-                              <select class="form-control" [ngModelOptions]="{standalone:true}"
-                                    [(ngModel)]="receituario.prontuario.id" name="pacientes">
-                                    <option value="">Selecione ...</option>
-                                    <option *ngFor="let pronts of prontuarios | async" [ngValue]="pronts?.id">
-                                          {{ pronts.paciente.paciente }}</option>
-                              </select>
+                              <input list="teste" type="text" class="form-control col-md-12"
+                                    [(ngModel)]="receituario.prontuario.paciente.paciente"
+                                    (keyup)="buscarPaciente($event)" name="id" placeholder="Buscar Paciente ..."
+                                    autocomplete="off" />
+                              <datalist id="teste">
+                                    <option *ngFor="let pronts of prontuarios" [ngValue]="pronts.paciente?.id"
+                                          autocomplete="off">
+                                          {{selectPaciente(pronts.id)}} {{pronts.paciente.paciente}} </option>
+                              </datalist>
                         </div>
                   </div>
             </div>
             <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
                   <div class="d-flex justify-content-center">
                         <h4 class="form-group mr-4 ">Receituário </h4>
-                        
+
                   </div>
                   <div *ngFor="let meds of receituario.medicamento">
                         <div class="row">
                               <div class="col-md-12">
                                     <div>
                                           <label>Medicamento:</label>
-                                          <input type="text" [(ngModel)]="meds.medicamento" name="medicamento"
-                                                 placeholder="Ex.: Dipirona 500mg/ml" class="form-control" [ngModelOptions]="{standalone: true}"/>
+                                          <input list="teste1" type="text" class="form-control col-md-12" [(ngModel)]="meds.medicamento"
+                                          (keyup)="buscarMedicamento($event)" name="medicamento"      
+                                          placeholder="Ex.: Dipirona 500mg/ml" autocomplete="off" />
+                                          <datalist id="teste1">
+                                                <option *ngFor="let medics of medicamentos" [ngValue]="medics?.id" autocomplete="off">
+                                                      {{medicamentoSelect(medics)}} {{medics.medicamento}}  - de {{medics.horas}} em {{medics.horas}} horas por {{medics.dias}} dias </option>
+                                          </datalist>
                                     </div>
                               </div>
+                              
                               <div class="col-md-6">
                                     <div>
                                           <label>Horas: </label>
-                                          <input type="time" [(ngModel)]="meds.horas" name="horas" class="form-control" [ngModelOptions]="{standalone: true}"/>
+                                          <input type="time" [(ngModel)]="meds.horas" name="horas" class="form-control"
+                                                [ngModelOptions]="{standalone: true}" />
                                     </div>
                               </div>
                               <div class="col-md-6">
                                     <div>
                                           <label>Dias:</label>
-                                          <input type="number" [(ngModel)]="meds.dias" name="dias"  class="form-control" [ngModelOptions]="{standalone: true}"/>
+                                          <input type="number" [(ngModel)]="meds.dias" name="dias" class="form-control"
+                                                [ngModelOptions]="{standalone: true}" />
                                     </div>
                               </div>
-                              <div class="ml-3 btn-group-sm mt-3">
-                                    <button type="button" class="btn btn-success" (click)="addmed()">
-                                          <i class="fa fa-plus"> </i> 
+                              <div class="ml-3 btn-group-sm mt-3" >
+                                    <button type="button" class="btn btn-success  mr-1" (click)="addmed()" >
+                                          <i class="fa fa-plus"> </i>
                                     </button>
-                              </div>
-                              <div class="ml-2 btn-group-sm mt-3">
                                     <button type="button" class="btn btn-danger" (click)="remove()">
-                                          <i class="fa fa-minus"> </i> 
+                                          <i class="fa fa-minus"> </i>
                                     </button>
                               </div>
                         </div>
-                  </div> 
+                  </div>
             </div>
 
             <div class="row">
@@ -101,18 +95,18 @@
             </div>
             <div class="row">
                   <div class="col-md-2">
-                        <button class="btn btn-success" type="submit" *ngIf="!receituario.id"
-                              ><i class="fa fa-save"></i>Salvar</button>
+                        <button class="btn btn-success" type="submit" *ngIf="!receituario.id"><i
+                                    class="fa fa-save"></i>Salvar</button>
 
-                        <button class="btn btn-success" type="submit" *ngIf="receituario.id"
-                        ><i class="fa fa-save"></i>Atualizar</button>
+                        <button class="btn btn-success" type="submit" *ngIf="receituario.id"><i
+                                    class="fa fa-save"></i>Atualizar</button>
                   </div>
                   <div class="col-md-2">
                         <button type="button" class="btn btn-danger" (click)="voltar()">
                               <i class="fa fa-chevron-left"> </i> Voltar
                         </button>
                   </div>
-                 
+
             </div>
             <div class="float-right" *ngIf="receituario.id">
                   <button type="button" (click)="gerarpdf()" class="btn btn-warning">
@@ -120,6 +114,5 @@
                   </button>
             </div>
       </form>
-      
-</div>
 
+</div>

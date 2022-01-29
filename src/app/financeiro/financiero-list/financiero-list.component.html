@@ -1,4 +1,4 @@
-<h1 class="mt-4">Lista de Atendimentos</h1>
+<h1 class="mt-4">Faturamento</h1>
      <ol class="breadcrumb mb-4">
          <li class="breadcrumb-item active">Listagem</li>
 
@@ -39,7 +39,7 @@
                         <td>{{ finan.valor }}</td>
                         <td>{{ finan.status }}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                              <button class="btn btn-primary" routerLink="/financeiro-form/{{ finan.id }}"><i class="fa fa-edit"></i></button>
+                              <button class="btn btn-primary" routerLink="/financeiro/form/{{ finan.id }}"><i class="fa fa-edit"></i></button>
                               <button class="btn btn-danger" (click)="preparaDelecao(finan)"
                             data-toggle="modal" data-target="#modalDelecao"><i class="fa fa-trash"></i></button></div>
                         </td>

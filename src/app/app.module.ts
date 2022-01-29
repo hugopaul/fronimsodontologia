@@ -12,9 +12,16 @@ import { ProntuarioModule } from './prontuario/prontuario.module';
 import { ServicosModule } from './servicos/servicos.module';
 import { FormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { LoginComponent } from './login/login.component';
+import { CadastroModule } from './cadastro/cadastro.module';
+import { LayoutComponent } from './layout/layout.component';
+import { ApiconexaoService } from './apiconexao.service';
+import { CommonModule } from '@angular/common';
+import { LoginModule } from './login/login.module';
+import { TokenInterceptor } from './token.interceptor';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
@@ -26,7 +33,8 @@ const maskConfig: Partial<IConfig> = {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent   
+    HomeComponent,
+    LayoutComponent   
   ],
   imports: [
     NgxMaskModule.forRoot( maskConfig ),
@@ -38,11 +46,21 @@ const maskConfig: Partial<IConfig> = {
     FinanceiroModule,
     ProntuarioModule,
     ServicosModule,
+    LoginModule,
     FormsModule,
     OrderModule,
-    RouterModule
+    RouterModule,
+    CadastroModule,
+    CommonModule
   ],
-  providers: [],
+  providers: [
+    ApiconexaoService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

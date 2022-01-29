@@ -16,16 +16,14 @@ export class FinancieroFormComponent implements OnInit {
   id:number;
   success: boolean = false;
   errors: String[];
-
   constructor(
     private service : ApiconexaoService,
     private router: Router,
     private acttivatedRouter: ActivatedRoute
-
   ) { }
 
   voltar(){
-    this.router.navigate(["financeiro-list"])
+    this.router.navigate(["financeiro/lista"])
   }
 
   ngOnInit(): void {
@@ -34,9 +32,11 @@ export class FinancieroFormComponent implements OnInit {
       this.id = urlParams['id'];
       if (this.id) {
         this.service.getFinanceiroById(this.id).subscribe(
-          response => this.financeiro = response, errorResponse => this.financeiro = new Financeiro())
+          response => {this.financeiro = response}, 
+          errorResponse => {this.financeiro = new Financeiro()})
           }
     })
+   
   }
   onSubmit(){
 

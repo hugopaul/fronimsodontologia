@@ -1,9 +1,11 @@
+import { Timestamp } from "rxjs";
+
 export class Paciente{
       id: number;
       paciente: string;
       cpf: string;
       endereco: string;
       telefone: string;
-      dataNascimento: Date;
+      dataNascimento: Date ;
       dataCadastro: string;
 }

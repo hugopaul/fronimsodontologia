@@ -44,7 +44,7 @@
                         <td>{{ pront.paciente.cpf | mask: '000.000.000-00'}}</td>
                         <td>{{ pront.paciente.dataNascimento }}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                              <button class="btn btn-primary" routerLink="/prontuario-form/{{ pront.id }}"><i class="fa fa-edit"></i></button>
+                              <button class="btn btn-primary" routerLink="/prontuario/form/{{ pront.id }}"><i class="fa fa-edit"></i></button>
                               <button class="btn btn-danger" (click)="preparaDelecao(pront)"
                             data-toggle="modal" data-target="#modalDelecao"><i class="fa fa-trash"></i></button></div>
                         </td>

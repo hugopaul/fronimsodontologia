@@ -1,0 +1,69 @@
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header">
+                                <h3 class="text-center font-weight-light my-4">
+                                    Cadastro de Colaborador
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger" role="alert" *ngIf="errors != null">
+                                        {{ errors }}
+                                    </div>
+                                </div>
+                                <div class="alert alert-success" *ngIf="msgSuccess != null">
+                                    {{ msgSuccess }}
+                                </div>
+                                <form #loginForm="ngForm" (submit)="onSubmit()">
+                                    <div class="form-group">
+                                        <label class="small mb-1">Login</label>
+                                        <input type="text" class="form-control py-4" name="username"
+                                            [(ngModel)]="username" autocomplete="off" placeholder="Digite seu login" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="small mb-1">Senha</label>
+                                        <input type="password" class="form-control py-4" name="password"
+                                            [(ngModel)]="password" placeholder="Digite sua senha" />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="inputPerfil" class="small mb-1"> Perfil do Colaborador </label>
+                                                <select class="form-control" name="perfil" [(ngModel)]="perfil">
+                                                    <option value="SECRETARIA">Secretario(a)</option>
+                                                    <option value="DENTISTA">Dentista</option>
+                                                    <option value="ADMINISTRADOR">Administrador(a)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" *ngIf="perfil == 'DENTISTA' ">
+                                                <label class="small mb-1">Número do Registro </label>
+                                                <input type="text" class="form-control py-4" name="registro"
+                                                    [(ngModel)]="registro" placeholder="CRO 0000" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div
+                                            class="form-group d-flex align-items-center justity-content-between mt-4 mt-0">
+                                            <button type="submit" class="btn btn-success">Cadastrar</button>
+                                        </div>
+                                        <div class="form-group d-flex justity-content-between mt-4 mt-0 ml-4">
+                                            <button  class="btn btn-success">Voltar</button>
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

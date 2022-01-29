@@ -37,7 +37,14 @@ export class AtestadoFormComponent implements OnInit {
   ) { 
     this.atestado = new Atestado();
   }
-
+  buscarPaciente(x:any){
+    this.service.getProntuarioByNamePaciente(this.atestado.prontuario.paciente.paciente).subscribe(
+      response => {this.prontuarios = response},
+      errorResponse => {this.errors = errorResponse.error.errors})
+  }
+  selectPaciente(x: number){
+    this.atestado.prontuario.id = x;
+  }
   ngOnInit(): void {
     this.prontuarios = this.service.getProntuario();
     let params: Observable<Params> = this.acttivatedRouter.params;
@@ -53,7 +60,7 @@ export class AtestadoFormComponent implements OnInit {
   
   
   voltar(){
-    this.router.navigate(["atestado-list"])
+    this.router.navigate(["atestado/lista"])
 }
 
 
@@ -77,7 +84,7 @@ onSubmit(){
         this.errors = null;
         this.success = true;
         this.atestado = response;
-        this.router.navigate([`atestado-form/${this.atestado.id}`])
+        this.router.navigate([`atestado/form/${this.atestado.id}`])
       }, errorResponse => {
         this.success = false;
         this.errors = errorResponse.error.errors;

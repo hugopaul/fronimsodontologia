@@ -44,7 +44,7 @@
                         <td>{{ atest.dataCadastro }}</td>
                         <td>{{ atest.cid }}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                              <button class="btn btn-primary" routerLink="/atestado-form/{{ atest.id }}"><i class="fa fa-edit"></i></button>
+                              <button class="btn btn-primary" routerLink="/atestado/form/{{ atest.id }}"><i class="fa fa-edit"></i></button>
                               <button class="btn btn-danger" (click)="preparaDelecao(atest)"
                             data-toggle="modal" data-target="#modalDelecao"><i class="fa fa-trash"></i></button>
                             <a class="btn btn-warning" (click)="gerarpdf( atest )" ><i class="fas fa-print"></i></a>

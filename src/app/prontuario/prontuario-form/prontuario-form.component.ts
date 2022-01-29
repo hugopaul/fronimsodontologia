@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiconexaoService } from 'src/app/apiconexao.service';
 import { Financeiro } from 'src/app/financeiro/financeiro';
+import { FinanceiroModule } from 'src/app/financeiro/financeiro.module';
 import { Paciente } from 'src/app/pacientes/pacientes';
 import { Atendimento } from '../atendimento';
 import { Prontuario } from '../prontuario';
@@ -50,7 +51,6 @@ export class ProntuarioFormComponent implements OnInit {
     this.prontuario = new Prontuario();
     this.finan = new Financeiro();
     this.atend = new Atendimento();
-
   }
 
   ngOnInit(): void {
@@ -61,27 +61,36 @@ export class ProntuarioFormComponent implements OnInit {
       if (this.id) {
         this.service.getProntuarioById(this.id).subscribe(
           response => this.prontuario = response, errorResponse => this.prontuario = new Prontuario())
-
-        this.service.getAtendimento().subscribe(
-          response => this.atendimento = response)
+        this.service.getAtendsByPront(this.id).subscribe(
+          response => this.atendimento = response )
       }
     })
 
+  }
+
+  buscarPaciente(x:any){
+    this.service.getPacienteByName(this.prontuario.paciente.paciente).subscribe(
+      response => {this.pacientes = response},
+      errorResponse => {this.errors = errorResponse.error.errors})
+  }
+  selectPaciente(x: number){
+    this.prontuario.paciente.id = x;
   }
 
   refresh(pacs : Paciente){
     this.service.getProntByPac(pacs.id)
       .subscribe( response => {
             if(response.id){
-              this.router.navigate([`prontuario-form/${response.id}`])
+              this.router.navigate([`prontuario/form/${response.id}`])
             }
       }, errorResponse => {
-        this.router.navigate([`prontuario-form/`])
+        this.router.navigate([`prontuario/form/`])
         this.prontuario.paciente = pacs;
+        this.errors = errorResponse.error.errors;
       })
   }
   novo(){
-    this.router.navigate([`prontuario-form/`])
+    this.router.navigate([`prontuario/form`])
   }
 
   dentesComAnotacao(dentes: string) {
@@ -113,7 +122,7 @@ export class ProntuarioFormComponent implements OnInit {
         .salvarProntuario(this.prontuario)
         .subscribe(response => {
           this.prontuario = response;
-          this.router.navigate([`/prontuario-form/${this.prontuario.id}`])
+          this.router.navigate([`/prontuario/form/${this.prontuario.id}`])
           this.errors = null;
           this.success = true;
         }, errorResponse => {
@@ -123,7 +132,7 @@ export class ProntuarioFormComponent implements OnInit {
     }
   }
   voltar() {
-    this.router.navigate(["/prontuario-list"])
+    this.router.navigate(["/prontuario/list"])
   }
 
   enviarParaFinanceiroEAtendimento() {
@@ -138,8 +147,6 @@ export class ProntuarioFormComponent implements OnInit {
 
 
       this.service.salvarFinanceiro(this.finan).subscribe(response => {
-        setTimeout(() => window.location.reload(), 2000);
-
         this.sucessoAtend = true
         this.erroAtend = null;
       }, errorResponse => {
@@ -153,7 +160,11 @@ export class ProntuarioFormComponent implements OnInit {
         }, errorResponse => {
           this.erroAtend = errorResponse.error.errors
         }
+        
       )
+      setTimeout(() => window.location.reload(), 1000)
+      
+
     } else {
       this.errors = ["Deve salvar os dados do prontuário antes de enviar ao Financeiro"];
       this.erroAtend = ["Deve salvar os dados do prontuário antes de enviar ao Financeiro"];
@@ -234,7 +245,7 @@ export class ProntuarioFormComponent implements OnInit {
   delecaoAtendimento(atend: Atendimento) {
     this.service.delAtendimento(atend).subscribe(
       response => {
-        setTimeout(() => window.location.reload(), 2000);
+        setTimeout(() => window.location.reload(), 1000);
         this.erroAtendList = null;
         this.sucessoAtendList = true;
       }, errorResponse => {
@@ -242,7 +253,19 @@ export class ProntuarioFormComponent implements OnInit {
         this.erroAtendList = errorResponse.error.errors
       }
     )
-
+     this.finan.id = atend.id;
+     this.finan.descricao = atend.atendimento;
+     this.finan.valor = atend.valor
+    this.service.delFinanceiro(this.finan).subscribe(
+      response => {
+        setTimeout(() => window.location.reload(), 1000);
+        this.erroAtendList = null;
+        this.sucessoAtendList = true;
+      }, errorResponse => {
+        this.sucessoAtend = null;
+        this.erroAtendList = errorResponse.error.errors
+      }
+    )
 
   }
 

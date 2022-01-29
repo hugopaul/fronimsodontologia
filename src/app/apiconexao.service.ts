@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AcroFormPasswordField } from 'jspdf';
 import { Observable } from 'rxjs';
+import { Usuario } from './cadastro/usuario';
 import { Financeiro } from './financeiro/financeiro';
 import { Paciente } from './pacientes/pacientes';
 import { Atendimento } from './prontuario/atendimento';
@@ -8,6 +10,7 @@ import { Prontuario } from './prontuario/prontuario';
 import { Atestado } from './servicos/atestado';
 import { Medicamento } from './servicos/medicamento';
 import { Receituario } from './servicos/receituario';
+import { JwtHelperService } from '@auth0/angular-jwt'
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,58 @@ import { Receituario } from './servicos/receituario';
 export class ApiconexaoService {
 
   constructor(private http: HttpClient) { }
+
+  clientId: 'ims-angular-app'
+  clientSecret: '33934514'
+  jwtHelper : JwtHelperService = new JwtHelperService();
+
+  obterToken(){
+    const tokenString = localStorage.getItem('access_token')
+    if(tokenString){
+      const token = JSON.parse(tokenString).access_token
+      return token
+    }
+    return null
+  }
+
+  isAuthenticated() : boolean{
+    const token = this.obterToken();
+    if(token){
+      const expired = this.jwtHelper.isTokenExpired(token)
+      return !expired
+    }
+    return false
+  }
+  tryLogar(username:string, password : string) : Observable<any>{
+    const params = new HttpParams()
+                            .set('username', username)
+                            .set('password', password)
+                            .set('grant_type', "password");
+    const headers = {
+      "Authorization": "Basic aW1zLWFuZ3VsYXItYXBwOjMzOTM0NTE0",
+      "Content-Type": "application/x-www-form-urlencoded"}
+      return this.http.post("http://localhost:8080/oauth/token", params.toString(), { headers }  )
+  }
+
+  encerrarSessao(){
+    localStorage.removeItem('access_token')
+  }
+
+  getUsuario(){
+   const token =  this.obterToken();
+   if(token){
+     const usuario = this.jwtHelper.decodeToken(token).user_name
+     return usuario;
+   }
+   return null;
+  }
+  getRole():Observable<String>{
+    const token =  this.obterToken();
+    var usuario;
+   if(token){
+     usuario = this.jwtHelper.decodeToken(token).user_name}
+    return this.http.get<String>(`http://localhost:8080/usuarios/perfil/${usuario}`)
+  }
 
   salvarAtestado(atestado: Atestado): Observable<Atestado> {
     return this.http.post<Atestado>('http://localhost:8080/atestados', atestado);
@@ -37,9 +92,22 @@ export class ApiconexaoService {
   salvarMedicamento(medicamento: Array<Medicamento>): Observable<Array<Medicamento>> {
     return this.http.post<Array<Medicamento>>('http://localhost:8080/medicamentos', medicamento);
   }
+  criarUsuario(usuario : Usuario) : Observable<any>{
+    return this.http.post<any>('http://localhost:8080/usuarios', usuario)
+}
 
   salvarTodosMedicamentos(medicamento : Array<Medicamento>): Observable<Array<Medicamento>> {
     return this.http.post<Array<Medicamento>>("http://localhost:8080/medicamentos/saveall", medicamento);
+  }
+  
+  getPacienteByName(nome: string): Observable<any> {
+    return this.http.post<string>(`http://localhost:8080/pacientes/buscar-string`, nome);
+  }
+  getMedicamentoByName(nome: string): Observable<any> {
+    return this.http.post<string>(`http://localhost:8080/medicamentos/buscar-string`, nome);
+  }
+  getProntuarioByNamePaciente(nome: string): Observable<any> {
+    return this.http.post<string>(`http://localhost:8080/prontuarios/buscar-string`, nome);
   }
 
 
@@ -63,7 +131,7 @@ export class ApiconexaoService {
     return this.http.get<Receituario[]>("http://localhost:8080/receituarios");
   }
   getAtendimento(): Observable<Atendimento[]> {
-    return this.http.get<Atendimento[]>("http://localhost:8080/atendimentos");
+    return this.http.get<Atendimento[]>("http://localhost:8080/atendimentos",);
   }
   getMedicamento(): Observable<Medicamento[]> {
     return this.http.get<Medicamento[]>("http://localhost:8080/medicamentos");
@@ -74,7 +142,9 @@ export class ApiconexaoService {
     return this.http.get<any>(`http://localhost:8080/prontuarios/prontbypac/${id}`);
   }
 
-
+  getAtendsByPront(id: number): Observable<Atendimento[]> {
+    return this.http.get<Atendimento[]>(`http://localhost:8080/atendimentos/buscaratendsporid/${id}`);
+  }
 
 
   getAtestadoById(id: number): Observable<Atestado> {
@@ -98,6 +168,8 @@ export class ApiconexaoService {
   getMedicamentoById(id: number): Observable<Medicamento> {
     return this.http.get<any>(`http://localhost:8080/medicamentos/${id}`);
   }
+  
+ 
 
   putAtestado(atestado: Atestado): Observable<any> {
     return this.http.put<Atestado>(`http://localhost:8080/atestados/${atestado.id}`, atestado);
@@ -125,7 +197,7 @@ export class ApiconexaoService {
     return this.http.delete<any>(`http://localhost:8080/atestados/${atestado.id}`);
   }
   delFinanceiro(financeiro: Financeiro): Observable<any> {
-    return this.http.delete<any>(`http://localhost:8080//salc/financeiros/${financeiro.id}`);
+    return this.http.delete<any>(`http://localhost:8080/financeiros/${financeiro.id}`);
   }
   delPaciente(paciente: Paciente): Observable<any> {
     return this.http.delete<any>(`http://localhost:8080/pacientes/${paciente.id}`);
@@ -144,6 +216,7 @@ export class ApiconexaoService {
   }
 
 
-
-
+  verifyAndSaveMedicamento(medicamento: Medicamento): Observable<Medicamento> {
+    return this.http.post<Medicamento>('http://localhost:8080/medicamentos/verificaesalva', medicamento);
+  }
 }

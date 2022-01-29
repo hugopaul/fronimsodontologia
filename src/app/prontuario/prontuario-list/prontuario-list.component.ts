@@ -26,7 +26,7 @@ export class ProntuarioListComponent implements OnInit {
   }
 
   novoCadastro(){
-    this.router.navigate(['prontuario-form'])
+    this.router.navigate(['prontuario/form'])
   }
 
   preparaDelecao(prontuario : Prontuario){

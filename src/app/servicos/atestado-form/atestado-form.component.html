@@ -17,37 +17,20 @@
                         </div>
                   </div>
             </div>
-            <div class="row" *ngIf="atestado.id">
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label> ID: </label>
-                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
-                                    [ngModel]="atestado.id" name="id" />
-                        </div>
-                  </div>
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label> Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
-                                    [ngModel]="atestado.dataCadastro" name="dataCadastro" />
-                        </div>
-                  </div>
-            </div>
-
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente"> Lista de Pacientes </label>
-                              <select class="form-control" [ngModelOptions]="{standalone:true}"
-                                    [(ngModel)]="atestado.prontuario.id" name="pacientes">
-                                    <option value="">Selecione ...</option>
-                                    <option *ngFor="let pacs of prontuarios | async" [ngValue]="pacs?.id">
-                                          {{ pacs.paciente.paciente }}</option>
-                              </select>
+                              <input list="teste" type="text" class="form-control col-md-12" [(ngModel)]="atestado.prontuario.paciente.paciente"
+                                    (keyup)="buscarPaciente($event)" name="id"
+                                    placeholder="Buscar Paciente ..." autocomplete="off" />
+                                    <datalist id="teste">
+                                          <option *ngFor="let pronts of prontuarios" [ngValue]="pronts.paciente?.id" autocomplete="off">
+                                                {{selectPaciente(pronts.id)}} {{pronts.paciente.paciente}} </option>
+                                    </datalist>
                         </div>
                   </div>
             </div>
-         
             <div class="border border-dark rounded" style="padding: 10px; margin-bottom: 15px;">
                   <div class="d-flex justify-content-center">
 

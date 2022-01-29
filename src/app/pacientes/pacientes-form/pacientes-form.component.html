@@ -18,22 +18,7 @@
                         </div>
                   </div>
             </div>
-            <div class="row" *ngIf="paciente.id">
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>ID: </label>
-                              <input type="text" class="form-control" disabled="true"
-                              [ngModel]="paciente.id" name="id"/>
-                        </div>
-                  </div>
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label>Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true"
-                              [ngModel]="paciente.dataCadastro" name="dataCadastro" />
-                        </div>
-                  </div>
-            </div>
+            
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
@@ -68,7 +53,7 @@
                         <div class="form-group">
                               <label>Data de Nascimento: </label>
                               <input type="date" class="form-control"
-                              [(ngModel)]="paciente.dataNascimento" name="dataNascimento" />
+                              [(ngModel)]="paciente.dataNascimento" name="dataNascimento"  date="dd/MM/yyyy" />
                         </div>
                   </div>
                   <div class="col-md-6">

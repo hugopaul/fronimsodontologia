@@ -33,7 +33,7 @@ mensagemErro: String;
   }
 
   novoCadastro(){
-    this.router.navigate(['/receituario-form'])
+    this.router.navigate(['/receituario/form'])
   }
   
   deletarReceituario(){

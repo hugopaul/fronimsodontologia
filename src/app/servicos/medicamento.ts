@@ -6,6 +6,6 @@ export class Medicamento{
       
       id: number;
       medicamento: string;
-      horas: Date;
+      horas: Time;
       dias: number;
 }

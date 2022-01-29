@@ -18,7 +18,7 @@
   </div>
     <div class="row">
         <div class="col-md-2">
-            <button class="btn btn-success" (click)="novoCadastro()">
+            <button class="btn btn-warning" (click)="novoCadastro()">
                 <i class="fa fa-plus"></i>
                 Novo
             </button>
@@ -44,10 +44,10 @@
                         <td>{{ pac.paciente}}</td>
                         <td>{{ pac.cpf  | mask: '000.000.000-00' }}</td>
                         <td>{{ pac.telefone | mask: '(00) 0 0000-0000'}}</td>
-                        <td>{{ pac.dataNascimento | mask: '0000/00/00'}}</td>
+                        <td>{{ pac.dataNascimento | date : 'dd/MM/yyyy' }}</td>
                         <td> <div class="btn-group btn-group-sm" role="group" aria-label="...">
                               <a class="btn btn-success" href="tel:{{pac.telefone}}"><i class="fas fa-phone-square-alt"></i></a>
-                              <button class="btn btn-primary" routerLink="/pacientes-form/{{ pac.id }}"><i class="fa fa-edit"></i></button>
+                              <button class="btn btn-primary" routerLink="/pacientes/form/{{ pac.id }}"><i class="fa fa-edit"></i></button>
                               <button class="btn btn-danger" (click)="preparaDelecao(pac)"
                             data-toggle="modal" data-target="#modalDelecao"><i class="fa fa-trash"></i></button></div>
                         </td>

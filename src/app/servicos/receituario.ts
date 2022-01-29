@@ -4,7 +4,7 @@ import { Medicamento } from "./medicamento";
 
 export class Receituario{
       id: number;
-      medicamento: Medicamento[] = new Array<Medicamento>();
+      medicamento: Medicamento[] = [];
       prontuario: Prontuario  = new Prontuario;
       dataCadastro: Date;
 }

@@ -28,7 +28,7 @@ export class AtestadoListComponent implements OnInit {
   }
 
   novoCadastro(){
-    this.router.navigate(['/atestado-form'])
+    this.router.navigate(['/atestado/form'])
   }
   
   deletarAtestado(){

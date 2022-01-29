@@ -17,14 +17,15 @@ import { Receituario } from '../receituario';
 })
 export class ReceituarioFormComponent implements OnInit {
 
-  receituario : Receituario;
-  prontuarios : Observable<Prontuario[]>;
+  receituario: Receituario;
+  prontuarios: Observable<Prontuario[]>;
+  medicamentos: Observable<Medicamento[]>;
+  medicamento: Medicamento;
 
   success: boolean = false;
   errors: String[];
 
   id: number;
-  o : number = 1;
   recSelect: Receituario;
 
   dayName = new Array("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado")
@@ -36,41 +37,75 @@ export class ReceituarioFormComponent implements OnInit {
     private router: Router,
     private acttivatedRouter: ActivatedRoute
   ) {
-     this.receituario = new Receituario();
-     }
+    this.receituario = new Receituario();
+  }
 
 
   ngOnInit(): void {
-    this.prontuarios = this.service.getProntuario();
     let params: Observable<Params> = this.acttivatedRouter.params;
     params.subscribe(urlParams => {
       this.id = urlParams['id'];
       if (this.id) {
         this.service.getReceituarioById(this.id).subscribe(
           response => this.receituario = response, errorResponse => this.receituario = new Receituario())
-          this.service.getAllByReceituario(this.id).subscribe(
-            response => {
-              this.receituario.medicamento = response;
-              console.log(this.receituario.medicamento);
-           }
-          )}
-          this.receituario.medicamento[0] = new Medicamento();
+        this.service.getAllByReceituario(this.id).subscribe(
+          response => {
+            this.receituario.medicamento = response;
+            console.log(this.receituario.medicamento);
+          }
+        )
+      }
+      this.receituario.medicamento[0] = new Medicamento();
     })
   }
-  addmed(){
-    this.receituario.medicamento[this.receituario.medicamento.length++] = new Medicamento();
+  medicamentoSelect(medics : Medicamento){
+    console.log(medics)
+    this.medicamento = medics;
   }
-  remove(){
+  addmed() {
+    if(this.receituario.medicamento[0].medicamento == null){
+      this.receituario.medicamento[0] = this.medicamento
+    }else{
+      this.receituario.medicamento.push(this.medicamento);
+    }
+  }
+  remove() {
     this.receituario.medicamento.slice(this.receituario.medicamento.length--)
-    console.log(this.receituario.medicamento)
   }
 
-  voltar(){
-    this.router.navigate(["receituario-list"])
+  voltar() {
+    this.router.navigate(["receituario/lista"])
+  }
+  buscarPaciente(x: any) {
+    this.service.getProntuarioByNamePaciente(this.receituario.prontuario.paciente.paciente).subscribe(
+      response => { this.prontuarios = response },
+      errorResponse => { this.errors = errorResponse.error.errors })
+  }
+  selectPaciente(x: number) {
+    this.receituario.prontuario.id = x;
+  }
+  buscarMedicamento(x: any) {
+    for (let i = 0; i < this.receituario.medicamento.length; i++) {
+      this.service.getMedicamentoByName(this.receituario.medicamento[i].medicamento).subscribe(
+        response => {
+          this.medicamentos = response
+        },
+        errorResponse => { this.errors = errorResponse.error.errors })
+    }
   }
 
-  onSubmit(){
-    console.log( this.receituario)    
+
+  onSubmit() {
+    let temp = [];
+    for (let i = 0; i < this.receituario.medicamento.length; i++) {     
+      if(this.receituario.medicamento[i].id == null){ 
+      delete this.receituario.medicamento[i];
+    }
+    }
+    for (let i of this.receituario.medicamento)
+      i && temp.push(i); // copy each non-empty value to the 'temp' array
+    this.receituario.medicamento = temp;
+    console.log(this.receituario)
     if (this.id) {
       this.service.putReceituario(this.receituario)
         .subscribe(response => {
@@ -88,7 +123,7 @@ export class ReceituarioFormComponent implements OnInit {
           this.success = true;
           this.receituario = response;
           console.log(this.receituario);
-          this.router.navigate([`receituario-form/${this.receituario.id}`])
+          this.router.navigate([`receituario/form/${this.receituario.id}`])
         }, errorResponse => {
           this.success = false;
           this.errors = errorResponse.error.errors;
@@ -96,7 +131,6 @@ export class ReceituarioFormComponent implements OnInit {
     }
 
   }
-  
   gerarpdf() {
 
     let documento = new jsPDF.jsPDF();

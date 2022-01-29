@@ -12,6 +12,7 @@
                         </button>
                   </div>
             </div>
+            <br>
             <div class="row">
                   <div class="col-md-12">
                         <div class="alert alert-success" role="alert" *ngIf="success == true">
@@ -24,38 +25,21 @@
                         </div>
                   </div>
             </div>
-            <div class="row" *ngIf="prontuario.id">
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label> ID: </label>
-                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
-                                    [ngModel]="prontuario.id" name="id" />
-                        </div>
-                  </div>
-                  <div class="col-md-6">
-                        <div class="form-group">
-                              <label> Data de Cadastro: </label>
-                              <input type="text" class="form-control" disabled="true" placeholder="Gerado ao Cadastrar"
-                                    [ngModel]="prontuario.dataCadastro" name="dataCadastro" />
-                        </div>
-                  </div>
-            </div>
+            
             <div class="row">
                   <div class="col-md-12">
                         <div class="form-group">
                               <label for="inputPaciente"> Lista de Pacientes </label>
-                              <select class="form-control" [ngModelOptions]="{standalone:true}" (click)="refresh(prontuario.paciente)"
-                                    [(ngModel)]="prontuario.paciente.id" name="pacientes">
-                                    <option value="">Selecione ...</option>
-                                    <option *ngFor="let pacs of pacientes | async" [ngValue]="pacs?.id">
-                                          {{pacs.paciente}}</option>
-                              </select>
+                              <input list="teste" type="text" class="form-control col-md-12" [(ngModel)]="prontuario.paciente.paciente"
+                                    (keyup)="buscarPaciente($event)" name="id"
+                                    placeholder="Buscar Paciente ..." autocomplete="off" />
+                                    <datalist id="teste">
+                                          <option *ngFor="let pacs of pacientes" [ngValue]="pacs?.id" autocomplete="off">
+                                                {{selectPaciente(pacs.id)}} {{pacs.paciente}} </option>
+                                    </datalist>
                         </div>
                   </div>
             </div>
-
-
-
             <div class="row d-flex justify-content-around">
                   <div class="form-group">
                         <label>Diabético? </label>
@@ -379,7 +363,7 @@
                   </div>
             </div>
 
-            <h4 class="form-group mr-4 ">Lista de Atendimentos do {{ prontuario.paciente.paciente }}: </h4>
+            <h4 class="form-group mr-4 ">Lista de Atendimentos do(a) {{ prontuario.paciente.paciente }}: </h4>
 
             <div class="row">
                   <div class="col-md-12"> 
@@ -402,11 +386,10 @@
                               </thead>
                               <tbody *ngFor="let atend of atendimento | orderBy: key : reverse; let i = index ">
                                     <tr *ngIf="atend.prontuario.id == prontuario.id">
-                                         
-                                          <td>{{ atend.id}}</td>
-                                          <td>{{ atend.atendimento}}</td>
+                                          <td>{{ atend.id }}</td>
+                                          <td>{{ atend.atendimento }}</td>
                                           <td>{{ atend.valor }}</td>
-                                          <td>{{ atend.dataAtendimento }}</td>
+                                          <td>{{ atend.dataAtendimento | mask: '00/00/0000' }}</td>
 
                                           <td>
                                                 <div class="btn-group btn-group-sm" role="group" aria-label="...">

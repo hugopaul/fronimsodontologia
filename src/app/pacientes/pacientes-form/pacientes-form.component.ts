@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { time } from 'console';
 import { Observable } from 'rxjs';
 import { ApiconexaoService } from 'src/app/apiconexao.service';
 import { Paciente } from '../pacientes';
@@ -59,7 +60,7 @@ export class PacientesFormComponent implements OnInit {
     }
   }
   voltar(){
-      this.router.navigate(["pacientes-list"])
+      this.router.navigate(["pacientes/lista"])
   }
 
 }
