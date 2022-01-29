@@ -22,6 +22,7 @@ import { ApiconexaoService } from './apiconexao.service';
 import { CommonModule } from '@angular/common';
 import { LoginModule } from './login/login.module';
 import { TokenInterceptor } from './token.interceptor';
+import { AgendamentoModule } from './agendamento/agendamento.module';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
@@ -51,7 +52,8 @@ const maskConfig: Partial<IConfig> = {
     OrderModule,
     RouterModule,
     CadastroModule,
-    CommonModule
+    CommonModule,
+    AgendamentoModule
   ],
   providers: [
     ApiconexaoService,
