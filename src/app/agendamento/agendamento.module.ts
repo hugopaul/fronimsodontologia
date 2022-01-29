@@ -8,8 +8,8 @@ import { OrderModule } from 'ngx-order-pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CalendarComponent } from './calendar/calendar.component';
-import { DayPilotModule }  from 'daypilot-lite-angular';
 import { DataService } from './calendar/data.service';
+import { DayPilotModule } from '@daypilot/daypilot-lite-angular';
 
 
 @NgModule({
