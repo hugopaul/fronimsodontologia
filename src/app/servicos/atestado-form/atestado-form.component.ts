@@ -38,9 +38,12 @@ export class AtestadoFormComponent implements OnInit {
     this.atestado = new Atestado();
   }
   buscarPaciente(x:any){
-    this.service.getProntuarioByNamePaciente(this.atestado.prontuario.paciente.paciente).subscribe(
-      response => {this.prontuarios = response},
-      errorResponse => {this.errors = errorResponse.error.errors})
+    if (this.atestado.prontuario.paciente.paciente != null){
+      this.service.getProntuarioByNamePaciente(this.atestado.prontuario.paciente.paciente).subscribe(
+        response => {this.prontuarios = response},
+        errorResponse => {this.errors = errorResponse.error.errors})
+    }
+   
   }
   selectPaciente(x: number){
     this.atestado.prontuario.id = x;

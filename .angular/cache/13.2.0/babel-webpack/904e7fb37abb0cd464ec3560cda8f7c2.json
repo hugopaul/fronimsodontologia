@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { Prontuario } from \"../prontuario/prontuario\";\nexport class Receituario {\n  constructor() {\n    this.medicamento = [];\n    this.prontuario = new Prontuario();\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

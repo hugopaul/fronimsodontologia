@@ -9,7 +9,7 @@
                     </a>
                     <div class="sb-sidenav-menu-heading">Principai Serviços</div>
 
-                    <a class="nav-link collapsed" routerLink="/#1" data-toggle="collapse" data-target="#collapseOne"
+                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseOne"
                         aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon">
                             <i class="fas fa-sign-in-alt"></i>
@@ -19,24 +19,22 @@
                             <i class="fas fa-angle-down"></i>
                         </div>
                     </a>
-
                     <div class="collapse" id="collapseOne" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" routerLink="/pacientes/form">Cadastrar Pacientes</a>
                             <a class="nav-link" routerLink="/pacientes/lista">Listar Pacientes</a>
                         </nav>
                     </div>
-                    <a class="nav-link collapsed" routerLink="/agendamento/agenda" >
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </div>
-                        Agendamento
-                        <div class="sb-sidenav-collapse-arrow">
-                            <i class="fas fa-angle-down"></i>
-                        </div>
+                    <a class="nav-link collapsed" routerLink="/agendamento/agenda" >Agendamento<div class="sb-nav-link-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    Agendamento
+                    <div class="sb-sidenav-collapse-arrow">
+                        <i class="fas fa-angle-down"></i>
+                    </div>
                     </a>
                     <div *ngIf="role != 'SECRETARIA' ">
-                        <a class="nav-item nav-link collapsed" routerLink="/#4" data-toggle="collapse"
+                        <a class="nav-item nav-link collapsed"  data-toggle="collapse"
                             data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-notes-medical"></i>
@@ -52,7 +50,7 @@
                             </nav>
                         </div>
 
-                        <a class="nav-item nav-link collapsed" routerLink="/#7" data-toggle="collapse"
+                        <a class="nav-item nav-link collapsed" data-toggle="collapse"
                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-file-medical"></i>
@@ -68,7 +66,7 @@
                             </nav>
                         </div>
 
-                        <a class="nav-item nav-link collapsed" routerLink="/#9" data-toggle="collapse"
+                        <a class="nav-item nav-link collapsed"  data-toggle="collapse"
                             data-target="#collapseTree" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-book-medical"></i>
@@ -87,7 +85,7 @@
                     <div *ngIf="role != 'DENTISTA' ">
                         <div class="sb-sidenav-menu-heading">Livro Caixa</div>
 
-                        <a class="nav-item nav-link collapsed" routerLink="/#13" data-toggle="collapse"
+                        <a class="nav-item nav-link collapsed"  data-toggle="collapse"
                             data-target="#collapseFour" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-money-check-alt"></i>
@@ -105,7 +103,7 @@
                     <div *ngIf="role == 'ADMINISTRADOR'">
                         <div class="sb-sidenav-menu-heading">Colaboradores</div>
 
-                        <a class="nav-item nav-link collapsed" routerLink="/#11" data-toggle="collapse"
+                        <a class="nav-item nav-link collapsed" data-toggle="collapse"
                             data-target="#collapseFive" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-money-check-alt"></i>

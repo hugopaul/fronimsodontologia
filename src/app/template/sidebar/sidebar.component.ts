@@ -19,13 +19,13 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
   this.usuarioLogado = this.api.getUsuario();
-  this.api.getRole().subscribe(
+ /* this.api.getRole().subscribe(
     response =>{
     }, errorResponse =>{
       this.role = errorResponse.error.text
+      console.log(this.role)
     }
-  )
-  console.log(this.role)
+  )*/
   }
 
   logout(){
