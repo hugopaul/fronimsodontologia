@@ -5,12 +5,11 @@ import {
   DayPilotMonthComponent,
   DayPilotNavigatorComponent
 } from "@daypilot/daypilot-lite-angular";
-import { DataService } from "./data.service";
+import { DataService } from "../data.service";
 
 @Component({
   selector: 'calendar-component',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  templateUrl: './calendar.component.html'
 })
 export class CalendarComponent implements AfterViewInit {
 
@@ -27,6 +26,7 @@ export class CalendarComponent implements AfterViewInit {
     showMonths: 3,
     cellWidth: 25,
     cellHeight: 25,
+    locale: "pt-br",
     onVisibleRangeChanged: args => {
       this.loadEvents();
     }
@@ -44,6 +44,8 @@ export class CalendarComponent implements AfterViewInit {
 
   configDay: DayPilot.CalendarConfig = {
     viewType: "Day",
+    timeFormat: "Clock24Hours",
+    locale: "pt-br",
     onTimeRangeSelected: async (args) => {
           /*const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
       const dp = args.control;
@@ -60,6 +62,8 @@ export class CalendarComponent implements AfterViewInit {
 
   configWeek: DayPilot.CalendarConfig = {
     viewType: "Week",
+    timeFormat: "Clock24Hours",
+    locale: "pt-br",
     onTimeRangeSelected: async (args) => {
 
       /*const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
@@ -78,6 +82,7 @@ export class CalendarComponent implements AfterViewInit {
   };
  
   configMonth: DayPilot.MonthConfig = {
+    locale: "pt-br",
   };
 
   constructor(private ds: DataService) {

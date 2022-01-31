@@ -25,7 +25,8 @@
                             <a class="nav-link" routerLink="/pacientes/lista">Listar Pacientes</a>
                         </nav>
                     </div>
-                    <a class="nav-link collapsed" routerLink="/agendamento/agenda" >Agendamento<div class="sb-nav-link-icon">
+                    <a class="nav-link collapsed" *ngIf="role != 'SECRETARIA'" routerLink="/agendamento/agenda" >
+                        <div class="sb-nav-link-icon">
                         <i class="fas fa-sign-in-alt"></i>
                     </div>
                     Agendamento
