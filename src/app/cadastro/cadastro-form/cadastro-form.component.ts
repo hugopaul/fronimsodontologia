@@ -11,52 +11,58 @@ import { Usuario } from '../usuario';
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.css']
 })
-export class CadastroFormComponent implements OnInit{
+export class CadastroFormComponent implements OnInit {
 
-  username:string;
+  username: string;
   password: string;
-  perfil:string;
-  registro:string= null
-  msgSuccess:string = null;
-  errors: string = null;
-
+  nome: string;
+  perfil: string;
+  registro: string = null
+  msgSucesso: boolean;
+  msgfalha: boolean;
+  errors: string[];
+  errorss: string[];
   constructor(
-    private router : Router,
-    private service : ApiconexaoService
+    private router: Router,
+    private service: ApiconexaoService
   ) { }
 
-  ngOnInit(){
-   
+  ngOnInit() {
+
   }
-  
-  onSubmit(){
+
+  onSubmit() {
     const usuario: Usuario = new Usuario();
     usuario.username = this.username
     usuario.password = this.password
     usuario.perfil = this.perfil
-    if(this.perfil == 'DENTISTA'){
+    usuario.nome = this.nome
+    if (this.perfil == 'DENTISTA') {
       usuario.registro = this.registro.toUpperCase()
     }
-    console.log(usuario.registro);
 
     this.service.criarUsuario(usuario)
-    .subscribe( response => {
-      this.msgSuccess = "Cadastro realizado com sucesso!"
-      this.errors = null
-      this.username = '';
-      this.password = '';
-      this.perfil = '';
-      this.registro = '';
-      console.log(response)
-    }, errorResponse => {
-      console.log(errorResponse)
-      if(errorResponse.error.text){      
-        this.errors = null
-      }else{
-        this.errors = errorResponse.error
+      .subscribe(response => {
+        this.msgSucesso = true
+        this.msgfalha = false;
+        this.username = '';
+        this.password = '';
+        this.nome = '';
+        this.perfil = '';
+        this.registro = '';
+      }, errorResponse => {
+        console.log(errorResponse)
+        this.msgSucesso = false
+        this.msgfalha = true;
+        if(errorResponse.error.text == "Usuário cadastrado com sucesso!"){
+          this.msgfalha=false
+        }else if (errorResponse.error.errors) {
+          this.errors = errorResponse.error.errors
+        }else {
+          this.errors = [];
+          this.errors[0] = errorResponse.error.toString();
+        }
       }
-      this.msgSuccess =errorResponse.error.text
-    }
       )
   }
 

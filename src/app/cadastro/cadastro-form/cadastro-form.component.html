@@ -11,19 +11,29 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                                <div class="col-md-12">
-                                    <div class="alert alert-danger" role="alert" *ngIf="errors != null">
-                                        {{ errors }}
-                                    </div>
-                                </div>
-                                <div class="alert alert-success" *ngIf="msgSuccess != null">
-                                    {{ msgSuccess }}
-                                </div>
+                               
                                 <form #loginForm="ngForm" (submit)="onSubmit()">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                              <div class="alert alert-success" role="alert" *ngIf="msgSucesso == true">
+                                                    Paciente salvo(a) com sucesso! 
+                                              </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                              <div class="alert alert-danger" role="alert" *ngIf="msgfalha == true && errors.length > 0">
+                                                    {{ errors }}
+                                              </div>
+                                        </div>
+                                  </div>
+                                    <div class="form-group">
+                                        <label class="small mb-1">Nome Completo </label>
+                                        <input type="text" class="form-control py-4" name="nome"
+                                            [(ngModel)]="nome" autocomplete="off" placeholder="Digite o nome completo" />
+                                    </div>
                                     <div class="form-group">
                                         <label class="small mb-1">Login</label>
                                         <input type="text" class="form-control py-4" name="username"
-                                            [(ngModel)]="username" autocomplete="off" placeholder="Digite seu login" />
+                                            [(ngModel)]="username" autocomplete="off" placeholder="Digite o login" />
                                     </div>
                                     <div class="form-group">
                                         <label class="small mb-1">Senha</label>

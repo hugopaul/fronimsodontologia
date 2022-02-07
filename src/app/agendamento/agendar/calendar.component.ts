@@ -5,21 +5,39 @@ import {
   DayPilotMonthComponent,
   DayPilotNavigatorComponent
 } from "@daypilot/daypilot-lite-angular";
+import { ApiconexaoService } from "src/app/apiconexao.service";
+import { Paciente } from "src/app/pacientes/pacientes";
 import { DataService } from "../data.service";
+
+import { Observable } from 'rxjs';
+import { Marcacao } from "../marcacao";
+import { Usuario } from "src/app/cadastro/usuario";
 
 @Component({
   selector: 'calendar-component',
-  templateUrl: './calendar.component.html'
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.css']
+
 })
 export class CalendarComponent implements AfterViewInit {
+
+  openModal = false;
+  marcacao : Marcacao = new Marcacao();
+  pacientes: Observable<Paciente[]>;
+  usuarios: Observable<Usuario[]>;
+    success: boolean = false;
+  errors: String[];
 
   @ViewChild("day") day!: DayPilotCalendarComponent;
   @ViewChild("week") week!: DayPilotCalendarComponent;
   @ViewChild("month") month!: DayPilotMonthComponent;
   @ViewChild("navigator") nav!: DayPilotNavigatorComponent;
 
-  events: DayPilot.EventData[] = [];
+  events: Marcacao[]= [];
 
+  constructor(private ds: DataService, private service: ApiconexaoService,) {
+    this.viewWeek();
+  }
   date = DayPilot.Date.today();
 
   configNavigator: DayPilot.NavigatorConfig = {
@@ -32,6 +50,49 @@ export class CalendarComponent implements AfterViewInit {
     }
   };
 
+  buscarPaciente(x:any){
+    this.service.getPacienteByName(this.marcacao.paciente.paciente).subscribe(
+      response => {this.pacientes = response},
+      errorResponse => {this.errors = errorResponse.error.errors})
+  }
+
+  selectPaciente(x: number){
+    this.marcacao.paciente.id = x;
+  }
+
+  buscarDoutor(x:any){
+    this.service.getDoutorByName(this.marcacao.usuario.nome).subscribe(
+      response => {this.usuarios = response},
+      errorResponse => {this.errors = errorResponse.error.errors})
+  }
+
+  selectDoutor(x: number){
+    this.marcacao.usuario.id = x;
+  }
+
+  cadastrarMarcacao(){
+    this.openModal = !this.openModal;
+      this.service.cadastrarMarcacao(this.marcacao).subscribe(
+        response => {
+          console.log(response);
+          this.loadEvents();
+        }
+      )
+  }
+  atualizarMarcacao(){
+    this.openModal = !this.openModal;
+    this.service.atualizarMarcacao(this.marcacao).subscribe(
+      response => {
+        
+        console.log(response);
+        this.loadEvents();
+      }
+    )
+  }
+
+  voltar(){
+    this.openModal = !this.openModal
+  }
   selectTomorrow() {
     this.date = DayPilot.Date.today().addDays(1);
   }
@@ -47,16 +108,9 @@ export class CalendarComponent implements AfterViewInit {
     timeFormat: "Clock24Hours",
     locale: "pt-br",
     onTimeRangeSelected: async (args) => {
-          /*const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
-      const dp = args.control;
-      dp.clearSelection();
-      if (!modal.result) { return; }
-      dp.events.add(new DayPilot.Event({
-        start: args.start,
-        end: args.end,
-        id: DayPilot.guid(),
-        text: modal.result
-      }));*/
+      this.openModal = !this.openModal
+      this.marcacao.start = args.start.toString();
+      this.marcacao.end = args.end.toString();
     }
   };
 
@@ -65,7 +119,7 @@ export class CalendarComponent implements AfterViewInit {
     timeFormat: "Clock24Hours",
     locale: "pt-br",
     onTimeRangeSelected: async (args) => {
-
+      //this.marcacao.dtInicio = args.start.toString();
       /*const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
       const dp = args.control;
       dp.clearSelection();
@@ -85,9 +139,7 @@ export class CalendarComponent implements AfterViewInit {
     locale: "pt-br",
   };
 
-  constructor(private ds: DataService) {
-    this.viewWeek();
-  }
+
 
   ngAfterViewInit(): void {
     this.loadEvents();
@@ -97,6 +149,7 @@ export class CalendarComponent implements AfterViewInit {
     const from = this.nav.control.visibleStart();
     const to = this.nav.control.visibleEnd();
     this.ds.getEvents(from, to).subscribe(result => {
+      console.log(result)
       this.events = result;
     });
   }

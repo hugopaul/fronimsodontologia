@@ -7,6 +7,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { CalendarComponent } from './agendar/calendar.component';
 import { RouterModule } from '@angular/router';
 import { DataService } from './data.service';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { DataService } from './data.service';
     AgendamentoRoutingModule,
     HttpClientModule,
     DayPilotModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
   ], 
   declarations: [ CalendarComponent],
   exports:      [ CalendarComponent ],

@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class DataService {
 
-  events: any[] = [
+  /*events: any[] = [
     {
       id: "1",
       start: DayPilot.Date.today().addHours(10),
@@ -14,21 +14,12 @@ export class DataService {
       text: "Event 1"
     }
   ];
-
+*/
   constructor(private http : HttpClient){
   }
 
   getEvents(from: DayPilot.Date, to: DayPilot.Date): Observable<any[]> {
-    console.log(from.toString(), to.toString());
-    // simulating an HTTP request
-    return new Observable(observer => {
-      setTimeout(() => {
-        observer.next(this.events);
-        console.log(this.events)
-      }, 200);
-    });
-
-    // return this.http.get("/api/events?from=" + from.toString() + "&to=" + to.toString());
+    return this.http.get<any[]>(`http://localhost:8080/marcacoes/buscar?dtfim=${to.toString()}&dtinicio=${from.toString()}`);
   }
 
 }

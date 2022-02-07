@@ -125,7 +125,7 @@
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small float-none">Usuário Logado: </div>
-                {{ usuarioLogado }}
+                {{ role == "ADMINISTRADOR"? "ADM. ": role == 'DENTISTA' ? 'Dr(a)' : 'Operador '  }} {{usuarioLogado}}
                 <a class="ml-4" href="#" (click)="logout()"> <i
                         class="fas fa-sign-out-alt float-rigth ml-4 mr-4 "></i></a>
             </div>

@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { AcroFormPasswordField } from 'jspdf';
 import { Observable } from 'rxjs';
 import { Usuario } from './cadastro/usuario';
@@ -11,6 +11,7 @@ import { Atestado } from './servicos/atestado';
 import { Medicamento } from './servicos/medicamento';
 import { Receituario } from './servicos/receituario';
 import { JwtHelperService } from '@auth0/angular-jwt'
+import { Marcacao } from './agendamento/marcacao';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,8 @@ export class ApiconexaoService {
   clientId: 'ims-angular-app'
   clientSecret: '33934514'
   jwtHelper : JwtHelperService = new JwtHelperService();
+  token: string;
+ 
 
   obterToken(){
     const tokenString = localStorage.getItem('access_token')
@@ -56,20 +59,22 @@ export class ApiconexaoService {
   }
 
   getUsuario(){
-   const token =  this.obterToken();
-   if(token){
-     const usuario = this.jwtHelper.decodeToken(token).user_name
-     return usuario;
-   }
-   return null;
+    const tokenString = localStorage.getItem('access_token')
+   if(tokenString){
+    const usuario = this.jwtHelper.decodeToken(tokenString).user_name
+    return this.http.get<String>(`http://localhost:8080/usuarios/nome?user=${usuario}`)
   }
+     return null //this.http.get<string>(`http://localhost:8080/usuarios/nome?user=${usuario}`)
+  }
+
   getRole():Observable<String>{
-    const token =  this.obterToken();
-    var usuario;
-   if(token){
-     usuario = this.jwtHelper.decodeToken(token).user_name}
+    const tokenString = localStorage.getItem('access_token')
+   if(tokenString){
+    const usuario = this.jwtHelper.decodeToken(tokenString).user_name
     return this.http.get<String>(`http://localhost:8080/usuarios/perfil/${usuario}`)
   }
+  return null
+}
 
   salvarAtestado(atestado: Atestado): Observable<Atestado> {
     return this.http.post<Atestado>('http://localhost:8080/atestados', atestado);
@@ -95,6 +100,9 @@ export class ApiconexaoService {
   criarUsuario(usuario : Usuario) : Observable<any>{
     return this.http.post<any>('http://localhost:8080/usuarios', usuario)
 }
+  cadastrarMarcacao(marcacao: Marcacao) : Observable<any>{
+      return this.http.post<any>('http://localhost:8080/marcacoes', marcacao)
+  }
 
   salvarTodosMedicamentos(medicamento : Array<Medicamento>): Observable<Array<Medicamento>> {
     return this.http.post<Array<Medicamento>>("http://localhost:8080/medicamentos/saveall", medicamento);
@@ -106,9 +114,13 @@ export class ApiconexaoService {
   getMedicamentoByName(nome: string): Observable<any> {
     return this.http.post<string>(`http://localhost:8080/medicamentos/buscar-string`, nome);
   }
+  getDoutorByName(nome: string) : Observable<any>{
+    return this.http.post<string>(`http://localhost:8080/usuarios/buscar-string`, nome)
+  }
   getProntuarioByNamePaciente(nome: string): Observable<any> {
     return this.http.post<string>(`http://localhost:8080/prontuarios/buscar-string`, nome);
   }
+
 
 
   getAllByReceituario(id : number):Observable<Medicamento[]>{
@@ -191,6 +203,9 @@ export class ApiconexaoService {
   }
   putMedicamento(medicamento: Medicamento): Observable<any> {
     return this.http.put<Medicamento>(`http://localhost:8080/medicamentos/${medicamento.id}`, medicamento);
+  }
+  atualizarMarcacao(marcacao: Marcacao): Observable<any> {
+    return this.http.put<Marcacao>(`http://localhost:8080/marcacaos/${marcacao.id}`, marcacao);
   }
 
   delAtestado(atestado: Atestado): Observable<any> {

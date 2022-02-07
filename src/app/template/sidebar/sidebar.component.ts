@@ -15,17 +15,23 @@ export class SidebarComponent implements OnInit {
   constructor(
     private router: Router,
     private api :ApiconexaoService
-  ) { }
+  ) { 
+  }
 
   ngOnInit(): void {
-  this.usuarioLogado = this.api.getUsuario();
-  this.api.getRole().subscribe(
+    this.api.getRole().subscribe(
     response =>{
     }, errorResponse =>{
       this.role = errorResponse.error.text
-      console.log(this.role)
     }
   )
+  this.getNome();
+  }
+  getNome(){
+       this.api.getUsuario().subscribe(
+         response => {},
+         errorResponse => {this.usuarioLogado = errorResponse.error.text}
+       )
   }
 
   logout(){
